@@ -171,7 +171,7 @@ class ProfilingTaskView(gui3d.TaskView):
                 self.saveStats(path)
 
     def setData(self, stats):
-        self.data = [Stat(func, data) for func, data in stats.stats.iteritems()]
+        self.data = [Stat(func, data) for func, data in stats.stats.items()]
         self.update()
 
     def setSortKey(self, key):

@@ -62,7 +62,7 @@ class ExprSlider(gui.Slider):
         #print 'caller', self
         self.callEvent('onChange', self)
         # TODO temporary
-        print json.dumps(dict([(m,v) for m, v in self.taskview.modifiers.iteritems() if v != 0]))
+        print(json.dumps(dict([(m,v) for m, v in self.taskview.modifiers.items() if v != 0])))
         self.taskview.sliderChanged()
 
     def _changing(self, value):
@@ -132,7 +132,7 @@ class ExpressionMixerTaskView(gui3d.TaskView):
     def updatePose(self):
         posenames = []
         posevalues = []
-        for pname,pval in self.modifiers.items():
+        for pname,pval in list(self.modifiers.items()):
             if pval != 0:
                 posenames.append(pname)
                 posevalues.append(pval)
@@ -154,7 +154,7 @@ class ExpressionMixerTaskView(gui3d.TaskView):
         self.poseunit_names = poseunit_json['framemapping']
         log.message('unit pose frame count:%s', len(self.poseunit_names))
 
-        self.modifiers = dict(zip(self.poseunit_names, len(self.poseunit_names)*[0.0]))
+        self.modifiers = dict(list(zip(self.poseunit_names, len(self.poseunit_names)*[0.0])))
         self.base_poseunit = animation.PoseUnit(self.base_anim.name, self.base_anim.data[:self.base_anim.nBones*len(self.poseunit_names)], self.poseunit_names)
 
         self._load_gui()
@@ -185,7 +185,7 @@ class ExpressionMixerTaskView(gui3d.TaskView):
         self.sliderChanged()
 
     def sliderChanged(self):
-        if sum(v for m, v in self.modifiers.iteritems()) == 0:
+        if sum(v for m, v in self.modifiers.items()) == 0:
             self.saveBtn.setEnabled(False)
         else:
             self.saveBtn.setEnabled(True)
@@ -208,7 +208,7 @@ class ExpressionMixerTaskView(gui3d.TaskView):
 
     def saveCurrentPose(self, filename):
         import makehuman
-        unitpose_values = dict([(m,v) for m, v in self.modifiers.iteritems() if v != 0])
+        unitpose_values = dict([(m,v) for m, v in self.modifiers.items() if v != 0])
         if len(unitpose_values) == 0:
             raise RuntimeError("Requires at least one pose to be specified")
         tags = [t.strip() for t in self.tagsField.getValue().split(';')]

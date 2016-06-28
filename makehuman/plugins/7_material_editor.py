@@ -88,7 +88,7 @@ class MaterialEditorTaskView(gui3d.TaskView):
 
         @self.shaderList.mhEvent
         def onClicked(item):
-            self.setShader(unicode(item.getUserData()))
+            self.setShader(str(item.getUserData()))
 
         self.loadSaveBox = self.addRightWidget(gui.GroupBox("Material file"))
         self.loadMaterialBtn = self.loadSaveBox.addWidget(gui.BrowseButton(), 0, 0)
@@ -378,9 +378,9 @@ class MaterialEditorTaskView(gui3d.TaskView):
         selectedShader = None
         for name in sorted(shaders):
             item = self.shaderList.addItem(name, data = os.path.join(dir, name))
-            if shaderName and unicode(shaderName) == unicode(item.text):
+            if shaderName and str(shaderName) == str(item.text):
                 selectedShader = item
-                path = unicode(item.getUserData())
+                path = str(item.getUserData())
 
         if mat.shader and not selectedShader:
             # Custom shader selected (not in shader path): add it
@@ -532,7 +532,7 @@ class ColorValue(gui.GroupBox):
         self.name = name
 
         self.widgets = []
-        for col in xrange(3):
+        for col in range(3):
             child = FloatValue(self, 0)
             self.addWidget(child, 0, col)
             self.widgets.append(child)
@@ -692,9 +692,9 @@ class UniformValue(gui.GroupBox):
             values = np.atleast_2d(values)
         rows, cols = values.shape
         self.widgets = []
-        for row in xrange(rows):
+        for row in range(rows):
             widgets = []
-            for col in xrange(cols):
+            for col in range(cols):
                 child = self.createWidget(values[row,col], row)
                 self.addWidget(child, row, col)
                 widgets.append(child)
@@ -771,7 +771,7 @@ class StringValue(gui.TextEdit):
 
     @property
     def value(self):
-        return unicode(self.text)
+        return str(self.text)
 
     def setValue(self, value):
         self.setText(value)
@@ -837,7 +837,7 @@ class TextureValue(gui.QtGui.QWidget, gui.Widget):
 
         self.value = value
 
-        if value and isinstance(value, basestring):
+        if value and isinstance(value, str):
             self.browseBtn._path = pathToUnicode(value)
         elif defaultPath:
             self.browseBtn._path = pathToUnicode(defaultPath)
@@ -857,7 +857,7 @@ class TextureValue(gui.QtGui.QWidget, gui.Widget):
         self._path = pathToUnicode(value)
         if value:
             self.imageView.setImage(value)
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 self.browseBtn._path = pathToUnicode(value)
         else:
             self.imageView.setImage(mh.getSysDataPath('notfound.thumb'))
