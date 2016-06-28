@@ -42,7 +42,7 @@ import re
 import platform
 import string
 if sys.platform == 'win32':
-    import _winreg
+    import winreg
 import log
 import getpath
 

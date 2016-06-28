@@ -308,7 +308,7 @@ class Shader(object):
     def __del__(self):
         try:
             self.delete()
-        except StandardError:
+        except Exception:
             pass
 
     @staticmethod
@@ -436,7 +436,7 @@ class Shader(object):
         if self.uniforms is None:
             parameterCount = glGetProgramiv(self.shaderId, GL_ACTIVE_UNIFORMS)
             self.uniforms = []
-            for index in xrange(parameterCount):
+            for index in range(parameterCount):
                 name, size, type = glGetActiveUniform(self.shaderId, index)
                 if name.startswith('gl_'):
                     log.debug("Shader: adding built-in uniform %s", name)
@@ -464,7 +464,7 @@ class Shader(object):
             uniform.set(value)
 
         # Disable other texture units
-        for gl_tex_idx in xrange(GL_TEXTURE0 + SamplerUniform.currentSampler, 
+        for gl_tex_idx in range(GL_TEXTURE0 + SamplerUniform.currentSampler, 
                                  GL_TEXTURE0 + glmodule.MAX_TEXTURE_UNITS):
             glActiveTexture(gl_tex_idx)
             glBindTexture(GL_TEXTURE_2D, 0)
@@ -507,14 +507,14 @@ def getShader(path, defines=[], cache=None):
             try:
                 shader.initShader()
                 shader.modified = mtime
-            except RuntimeError, _:
+            except RuntimeError as _:
                 log.error("Error loading shader %s", cacheName, exc_info=True)
                 shader = False
     else:
         try:
             shader = Shader(path, defines)
             shader.modified = mtime
-        except RuntimeError, _:
+        except RuntimeError as _:
             log.error("Error loading shader %s", path, exc_info=True)
             shader = False
 
@@ -527,7 +527,7 @@ def reloadShaders():
         if _shaderCache[path]:
             try:
                 _shaderCache[path].initShader()
-            except RuntimeError, _:
+            except RuntimeError as _:
                 log.error("Error loading shader %s", path, exc_info=True)
                 _shaderCache[path] = False
         else:

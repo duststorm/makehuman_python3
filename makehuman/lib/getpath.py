@@ -51,18 +51,18 @@ def pathToUnicode(path):
     """
     if path is None:
         return path
-    elif isinstance(path, unicode):
+    elif isinstance(path, str):
         return path
     else:
         # Approach for basestring type, as well as others such as QString
         try:
-            return unicode(path, sys.getfilesystemencoding(), 'strict')
+            return str(path, sys.getfilesystemencoding(), 'strict')
         except UnicodeDecodeError:
             try:
-                path = unicode(path, 'utf-8', 'strict')
+                path = str(path, 'utf-8', 'strict')
                 return path.decode(sys.getfilesystemencoding(), 'strict')
             except UnicodeDecodeError:
-                return unicode(path, 'ascii', 'replace')
+                return str(path, 'ascii', 'replace')
 
 def formatPath(path):
     if path is None:
@@ -97,15 +97,15 @@ def getHomePath():
 
     # Windows
     if sys.platform == 'win32':
-        import _winreg
+        import winreg
         keyname = r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
         #name = 'Personal'
-        k = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, keyname)
-        value, type_ = _winreg.QueryValueEx(k, 'Personal')
-        if type_ == _winreg.REG_EXPAND_SZ:
-            __home_path = formatPath(_winreg.ExpandEnvironmentStrings(value))
+        k = winreg.OpenKey(winreg.HKEY_CURRENT_USER, keyname)
+        value, type_ = winreg.QueryValueEx(k, 'Personal')
+        if type_ == winreg.REG_EXPAND_SZ:
+            __home_path = formatPath(winreg.ExpandEnvironmentStrings(value))
             return __home_path
-        elif type_ == _winreg.REG_SZ:
+        elif type_ == winreg.REG_SZ:
             __home_path = formatPath(value)
             return __home_path
         else:
@@ -189,7 +189,7 @@ def commonprefix(paths, sep='/'):
     """
     from itertools import takewhile
 
-    bydirectorylevels = zip(*[p.split(sep) for p in paths])
+    bydirectorylevels = list(zip(*[p.split(sep) for p in paths]))
     return sep.join(x[0] for x in takewhile(_allnamesequal, bydirectorylevels))
 
 def isSubPath(subpath, path):
@@ -288,9 +288,9 @@ def search(paths, extensions, recursive=True, mutexExtensions=False):
     will be returned. Instead, only the file with highest extension precedence 
     (extensions occurs earlier in the extensions list) is kept.
     """
-    if isinstance(paths, basestring):
+    if isinstance(paths, str):
         paths = [paths]
-    if isinstance(extensions, basestring):
+    if isinstance(extensions, str):
         extensions = [extensions]
     extensions = [e[1:].lower() if e.startswith('.') else e.lower() for e in extensions]
 
@@ -330,7 +330,7 @@ def search(paths, extensions, recursive=True, mutexExtensions=False):
                             yield pathToUnicode( f )
 
     if mutexExtensions:
-        for f in ["%s.%s" % (p,e) for p,e in discovered.items()]:
+        for f in ["%s.%s" % (p,e) for p,e in list(discovered.items())]:
             yield pathToUnicode( f )
 
 def getJailedPath(filepath, relativeTo, jailLimits=[getDataPath(), getSysDataPath()]):

@@ -226,7 +226,7 @@ def reshape(w, h):
         glMatrixMode(GL_MODELVIEW)
 
         updatePickingBuffer()
-    except StandardError:
+    except Exception:
         log.error('gl.reshape', exc_info=True)
 
 def getMousePos():
@@ -433,7 +433,7 @@ def drawMesh(obj):
             else:
                 glBindTexture(GL_TEXTURE_2D, TEX_NOT_FOUND.textureId)
             if have_activeTexture:
-                for gl_tex_idx in xrange(GL_TEXTURE0 + 1, GL_TEXTURE0 + MAX_TEXTURE_UNITS):
+                for gl_tex_idx in range(GL_TEXTURE0 + 1, GL_TEXTURE0 + MAX_TEXTURE_UNITS):
                     glActiveTexture(gl_tex_idx)
                     glBindTexture(GL_TEXTURE_2D, 0)
                     glDisable(GL_TEXTURE_2D)
@@ -441,7 +441,7 @@ def drawMesh(obj):
                     glDisable(GL_TEXTURE_1D)
         else:
             # Disable all textures (when in fixed function textureless shading mode)
-            for gl_tex_idx in xrange(GL_TEXTURE0, GL_TEXTURE0 + MAX_TEXTURE_UNITS):
+            for gl_tex_idx in range(GL_TEXTURE0, GL_TEXTURE0 + MAX_TEXTURE_UNITS):
                 if have_activeTexture:
                     glActiveTexture(gl_tex_idx)
                 glBindTexture(GL_TEXTURE_2D, 0)
@@ -1031,7 +1031,7 @@ def draw(productionRender = False):
         else:
             _draw(productionRender)
         return True
-    except StandardError:
+    except Exception:
         log.error('gl.draw', exc_info=True)
         return False
 

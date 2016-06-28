@@ -39,10 +39,10 @@ Configuration file parser using JSON format
 import json
 
 def _u2s(value):
-    if isinstance(value, unicode):
+    if isinstance(value, str):
         return str(value)
     elif isinstance(value, dict):
-        return dict([(str(key), _u2s(val)) for key, val in value.iteritems()])
+        return dict([(str(key), _u2s(val)) for key, val in value.items()])
     elif isinstance(value, list):
         return [_u2s(val) for val in value]
     else:
