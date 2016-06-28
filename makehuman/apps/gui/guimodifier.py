@@ -47,6 +47,7 @@ from core import G
 import log
 from collections import OrderedDict
 import language
+import collections
 
 class ModifierTaskView(gui3d.TaskView):
     def __init__(self, category, name, label=None, saveName=None, cameraView=None):
@@ -83,7 +84,7 @@ class ModifierTaskView(gui3d.TaskView):
             isFirstBox = len(self.radioButtons) == 0
             self.categoryBox.addWidget(GroupBoxRadioButton(self, self.radioButtons, categoryName, box, selected=isFirstBox))
             if isFirstBox:
-                self.groupBox.showWidget(self.groupBoxes.values()[0])
+                self.groupBox.showWidget(list(self.groupBoxes.values())[0])
         else:
             box = self.groupBoxes[categoryName]
 
@@ -187,7 +188,7 @@ class GroupBoxRadioButton(gui.RadioButton):
 
 def _getCamFunc(cameraName):
     if cameraName:
-        if hasattr(gui3d.app, cameraName) and callable(getattr(gui3d.app, cameraName)):
+        if hasattr(gui3d.app, cameraName) and isinstance(getattr(gui3d.app, cameraName), collections.Callable):
             return cameraName
 
         return "set" + cameraName.upper()[0] + cameraName[1:]
@@ -209,7 +210,7 @@ def loadModifierTaskViews(filename, human, category, taskviewClass=None):
     data = json.load(open(filename, 'rb'), object_pairs_hook=OrderedDict)
     taskViews = []
     # Create task views
-    for taskName, taskViewProps in data.items():
+    for taskName, taskViewProps in list(data.items()):
         sName = taskViewProps.get('saveName', None)
         label = taskViewProps.get('label', None)
         taskView = taskviewClass(category, taskName, label, sName)
@@ -218,7 +219,7 @@ def loadModifierTaskViews(filename, human, category, taskviewClass=None):
         category.addTask(taskView)
 
         # Create sliders
-        for sliderCategory, sliderDefs in taskViewProps['modifiers'].items():
+        for sliderCategory, sliderDefs in list(taskViewProps['modifiers'].items()):
             for sDef in sliderDefs:
                 modifierName = sDef['mod']
                 modifier = human.getModifier(modifierName)
