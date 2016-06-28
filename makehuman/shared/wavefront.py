@@ -134,7 +134,7 @@ def loadObjFile(path, obj = None):
     # Sanity check for loose vertices
     strayVerts = []
     referencedVerts = set([ v for fvert in fverts for v in fvert ])
-    for vIdx in xrange(len(verts)):
+    for vIdx in range(len(verts)):
         if vIdx not in referencedVerts:
             strayVerts.append(vIdx)
     if len(strayVerts) > 0:

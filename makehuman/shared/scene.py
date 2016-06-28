@@ -37,7 +37,7 @@ Definitions of scene objects and the scene class.
 .mhscene file structure.
 """
 
-import cPickle as pickle
+import pickle as pickle
 
 import log
 import managed_file
@@ -85,7 +85,7 @@ class SceneObject(object):
         self._attributes = sorted(attributes.keys())
         self._attrver = {}
 
-        for (attrname, attr) in attributes.items():
+        for (attrname, attr) in list(attributes.items()):
 
             # Version control system for backwards compatibility
             # with older mhscene files.
@@ -227,7 +227,7 @@ class Scene(object):
                 self.environment.load(hfile)
                 nlig = pickle.load(hfile)
                 self.lights = []
-                for i in xrange(nlig):
+                for i in range(nlig):
                     light = Light(self)
                     light.load(hfile)
                     self.lights.append(light)

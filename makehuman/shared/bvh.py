@@ -74,7 +74,7 @@ class BVH():
     def addJoint(self, parentName, name):
         origName = name
         i = 1
-        while name in self.joints.keys():
+        while name in list(self.joints.keys()):
             name = "%s_%s" % (origName, i)
             i += 1
         parent = self.getJoint(parentName)
@@ -210,7 +210,7 @@ class BVH():
                         # Combine the rotations using quaternions to simplify math and normalizing (rotations only)
                         poseMats = animation.emptyTrack(self.frameCount)
                         m = np.identity(4, dtype=np.float32)
-                        for f_idx in xrange(self.frameCount):
+                        for f_idx in range(self.frameCount):
                             m[:3,:4] = bvhJoints[0].matrixPoses[f_idx]
                             q1 = tm.quaternion_from_matrix(m, True)
                             m[:3,:4] = bvhJoints[1].matrixPoses[f_idx]
@@ -242,7 +242,7 @@ class BVH():
 
     def getJointByCanonicalName(self, canonicalName):
         canonicalName = canonicalName.lower().replace(' ','_').replace('-','_')
-        for jointName in self.joints.keys():
+        for jointName in list(self.joints.keys()):
             if canonicalName == jointName.lower().replace(' ','_').replace('-','_'):
                 return self.getJoint(jointName)
         return None
@@ -251,7 +251,7 @@ class BVH():
         return name in self.joints
 
     def __cacheGetJoints(self):
-        from Queue import deque
+        from queue import deque
 
         result = []
         queue = deque([self.rootJoint])
@@ -434,7 +434,7 @@ class BVH():
                 else:
                     jointToBoneIdx[joint.name] = -1
 
-            for fIdx in xrange(animationTrack.nFrames):
+            for fIdx in range(animationTrack.nFrames):
                 offset = fIdx * animationTrack.nBones
                 for jIdx,joint in enumerate(nonEndJoints):
                     bIdx = jointToBoneIdx[joint.name]
@@ -484,7 +484,7 @@ class BVH():
         nFrames = len(jointsData[0])
         totalChannels = sum([len(joint.channels) for joint in allJoints])
 
-        for fIdx in xrange(self.frameCount):
+        for fIdx in range(self.frameCount):
             frameData = []
             for joint in allJoints:
                 offset = fIdx * len(joint.channels)
