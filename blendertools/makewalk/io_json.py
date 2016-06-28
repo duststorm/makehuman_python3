@@ -92,7 +92,7 @@ def encodeJsonData(data, pad=""):
         if data == {}:
             return "{}"
         string = "{"
-        for key,value in data.items():
+        for key,value in list(data.items()):
             string += "\n    %s\"%s\" : " % (pad, key) + encodeJsonData(value, pad+"    ") + ","
         return string[:-1] + "\n%s}" % pad
 
