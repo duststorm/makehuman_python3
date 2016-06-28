@@ -273,7 +273,7 @@ class SkeletonLibrary(gui3d.TaskView, filecache.MetadataCacher):
         # TODO maybe define a getter for this list in the skeleton module
         jointGroupNames = [group.name for group in self.human.meshData.faceGroups if group.name.startswith("joint-")]
         if self.human.getSkeleton():
-            jointGroupNames += self.human.getSkeleton().joint_pos_idxs.keys()
+            jointGroupNames += list(self.human.getSkeleton().joint_pos_idxs.keys())
             for groupName in jointGroupNames:
                 jointPositions.append(self.human.getSkeleton().getJointPosition(groupName, self.human))
         else:
