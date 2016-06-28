@@ -139,7 +139,7 @@ def writeMeshFile(human, filepath, objects, config):
                         <normal x="%s" y="%s" z="%s" />
                     </vertex>''' % (coords[vIdx,0], coords[vIdx,1], coords[vIdx,2],
                                     mesh.r_vnorm[vIdx,0], mesh.r_vnorm[vIdx,1], mesh.r_vnorm[vIdx,2]) \
-            for vIdx in xrange(coords.shape[0]) ])
+            for vIdx in range(coords.shape[0]) ])
         lines.append('                </vertexbuffer>')
 
 
@@ -183,7 +183,7 @@ def writeMeshFile(human, filepath, objects, config):
 
             lines.append('            <boneassignments>')
             boneNames = [ bone.name for bone in human.getSkeleton().getBones() ]
-            for (boneName, (verts,ws)) in weights.data.items():
+            for (boneName, (verts,ws)) in list(weights.data.items()):
                 bIdx = boneNames.index(boneName)
                 for i, vIdx in enumerate(verts):
                     w = ws[i]
@@ -313,7 +313,7 @@ def writeMaterialFile(human, filepath, objects, config):
 
         textures = mat.exportTextures(os.path.join(folderpath, 'textures'))
 
-        for textureType, texturePath in textures.items():
+        for textureType, texturePath in list(textures.items()):
             if config.exportShaders:
                 include = True
             else:
@@ -347,7 +347,7 @@ def writeAnimation(human, linebuffer, animTrack, config):
         linebuffer.append('                <track bone="%s">' % bone.name)
         linebuffer.append('                    <keyframes>')
         frameTime = 1.0/float(animTrack.frameRate)
-        for frameIdx in xrange(animTrack.nFrames):
+        for frameIdx in range(animTrack.nFrames):
             poseMat = animTrack.getAtFramePos(frameIdx)[bIdx]
             I[:3,:4] = poseMat[:3,:4]
             poseMat = I
