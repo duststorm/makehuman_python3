@@ -223,7 +223,7 @@ class Target(object):
                 np.save(lname, license)
                 return iname, vname, lname
             return iname, vname, None
-        except StandardError, _:
+        except Exception as _:
             log.error('error saving %s', name)
 
     def _load(self, name):
@@ -231,7 +231,7 @@ class Target(object):
         logger.debug('loading target %s', name)
         try:
             self._load_binary(name)
-        except StandardError, _:
+        except Exception as _:
             self._load_text(name)
         logger.debug('loaded target %s', name)
 
@@ -453,7 +453,7 @@ def saveTranslationTarget(obj, targetPath, groupToSave=None, epsilon=0.001):
 
     try:
         with open(targetPath, 'w') as fileDescriptor:
-            for i in xrange(nVertsExported):
+            for i in range(nVertsExported):
                 fileDescriptor.write('%d %f %f %f\n' % (vertsToSave[i], delta[i,0], delta[i,1], delta[i,2]))
 
         if nVertsExported == 0:
