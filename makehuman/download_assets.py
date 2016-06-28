@@ -96,8 +96,8 @@ def downloadFile(ftp, filePath, destination, fileProgress):
         os.makedirs(os.path.dirname(destination))
 
     #print "[%d%% done] Downloading file %s to %s" % (fileProgress, url, filename)
-    print "[%d%% done] Downloading file %s" % (fileProgress, os.path.basename(destination))
-    print "             %s ==> %s" % (filePath, destination)
+    print(("[%d%% done] Downloading file %s" % (fileProgress, os.path.basename(destination))))
+    print(("             %s ==> %s" % (filePath, destination)))
     downloadFromFTP(ftp, filePath, destination)
 
 def parseContentsFile(filename):
@@ -112,7 +112,7 @@ def parseContentsFile(filename):
             continue
         c=l.split()
         try:
-            contents[c[0]] = long(c[1])
+            contents[c[0]] = int(c[1])
         except:
             contents[c[0]] = 0
     f.close()
@@ -121,13 +121,13 @@ def parseContentsFile(filename):
 def writeContentsFile(filename, contents):
     from codecs import open
     f = open(filename, 'w', encoding="utf-8")
-    for fPath, mtime in contents.items():
+    for fPath, mtime in list(contents.items()):
         f.write("%s %s\n" % (fPath, mtime))
     f.close()
 
 def getNewFiles(oldContents, newContents, destinationFolder):
     result = []
-    for (filename, newTime) in newContents.items():
+    for (filename, newTime) in list(newContents.items()):
         destFile = os.path.join(destinationFolder, filename.lstrip('/'))
         if not os.path.isfile(destFile):
             result.append(filename)
@@ -141,7 +141,7 @@ def getNewFiles(oldContents, newContents, destinationFolder):
 
 def getRemovedFiles(oldContents, newContents, destinationFolder):
     toRemove = []
-    for filename in oldContents.keys():
+    for filename in list(oldContents.keys()):
         if filename not in newContents:
             destFile = os.path.join(destinationFolder, filename.lstrip('/'))
             if os.path.isfile(destFile):
@@ -193,7 +193,7 @@ def getFTPContents(ftp):
 
         return result
 
-    print 'Retrieving new repository content...'
+    print('Retrieving new repository content...')
     rootPath = ftp.pwd()
     contentsList = walkFTP(ftp)
     sys.stdout.write("[100% done] Getting repository contents\r")
@@ -207,7 +207,7 @@ def getFTPContents(ftp):
     return result
 
 def downloadFromHTTP(url, destination):
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
 
     def chunk_report(bytes_so_far, chunk_size, total_size):
         percentage = float(bytes_so_far) / total_size
@@ -237,7 +237,7 @@ def downloadFromHTTP(url, destination):
         return bytes_so_far
 
     f = open(destination, 'wb')
-    response = urllib.urlopen(url)
+    response = urllib.request.urlopen(url)
     if response.getcode() != 200:
         raise RuntimeError('Failed to download file %s (error code %s)' % (url, response.getcode()))
     chunk_read(response, report_hook=chunk_report)
@@ -286,7 +286,7 @@ if __name__ == '__main__':
     # Obtain MH version to download assets for
     version = getVersion()
 
-    print 'Refreshing assets from repository "%s" (version %s)' % (repo, version)
+    print(('Refreshing assets from repository "%s" (version %s)' % (repo, version)))
 
     ftpPath = os.path.join(ftpPath, version.lstrip('/'), repo.lstrip('/'))
     ftpPath = os.path.normpath(ftpPath)
@@ -297,36 +297,36 @@ if __name__ == '__main__':
     if os.path.isfile(contentsFile):
         # Parse previous contents file
         oldContents = parseContentsFile(contentsFile)
-        if len(oldContents) > 0 and len(str(oldContents[oldContents.keys()[0]])) < 5:
+        if len(oldContents) > 0 and len(str(oldContents[list(oldContents.keys())[0]])) < 5:
             # Ignore old style contents file
             oldContents = {}
     else:
         oldContents = {}
 
     # Setup FTP connection
-    print "Connecting to FTP..."
+    print("Connecting to FTP...")
     ftp = FTP(ftpUrl)
     ftp.login()
     ftp.cwd(ftpPath.replace('\\', '/'))
 
     # Verify if there is an archive reference URL
     if isArchived(ftp):
-        print "Redirected to asset archive"
+        print("Redirected to asset archive")
         archiveUrl = downloadFromFTP(ftp, 'archive_url.txt', None).strip()
         filename = os.path.basename(archiveUrl)
         zipDest = os.path.join(getSysPath(), filename)
         if os.path.exists(zipDest):
-            print "Archive %s already exists, not downloading again." % zipDest
+            print(("Archive %s already exists, not downloading again." % zipDest))
             sys.exit()
-        print "Downloading archive from HTTP (%s)" % archiveUrl
+        print(("Downloading archive from HTTP (%s)" % archiveUrl))
         # Download and extract archive
         downloadFromHTTP(archiveUrl, zipDest)
-        print "Extracting zip archive..."
+        print("Extracting zip archive...")
         import zipfile
         zFile = zipfile.ZipFile(zipDest)
         zFile.extractall(getSysDataPath())
 
-        print "All done."
+        print("All done.")
         sys.exit()
 
     # Get contents from FTP
@@ -350,9 +350,9 @@ if __name__ == '__main__':
                 newFile = filename + '.' + str(i) + '.removedasset'
                 i = i+1
             shutil.move(filename, newFile)
-            print "Moved removed file to %s (removed from FTP)" % newFile
+            print(("Moved removed file to %s (removed from FTP)" % newFile))
         else:
-            print "Removing file %s (removed from FTP)" % filename
+            print(("Removing file %s (removed from FTP)" % filename))
             os.remove(filename)
 
     TOTAL_FILES = len(toDownload)
@@ -371,7 +371,7 @@ if __name__ == '__main__':
                 newFile = filename + '.' + str(i) + '.oldasset'
                 i = i+1
             shutil.move(filename, newFile)
-            print "Moved old version of updated file to %s" % newFile
+            print(("Moved old version of updated file to %s" % newFile))
 
         fileProgress = round(100 * float(fIdx)/TOTAL_FILES, 2)
         downloadFile(ftp, filePath, filename, fileProgress)
@@ -381,5 +381,5 @@ if __name__ == '__main__':
 
     writeContentsFile(contentsFile, newContents)
 
-    print "All done."
+    print("All done.")
 
