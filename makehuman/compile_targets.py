@@ -87,15 +87,15 @@ if __name__ == '__main__':
                     os.remove(lname)
                 os.remove(iname)
                 os.remove(vname)
-                print "[%.0f%% done] converted target %s" % (100*(float(i)/float(len(allTargets))), path)
-            except None, e:
+                print("[%.0f%% done] converted target %s" % (100*(float(i)/float(len(allTargets))), path))
+            except None as e:
                 raise e
-                print 'error converting target %s' % path
+                print('error converting target %s' % path)
 
-    print "Writing images list"
+    print("Writing images list")
     with open('data/images.list', 'w', encoding="utf-8") as f:
         allImages = allFiles[1]
         for path in allImages:
             path = path.replace('\\','/')
             f.write(path + '\n')
-    print "All done."
+    print("All done.")
