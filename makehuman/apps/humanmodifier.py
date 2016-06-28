@@ -46,6 +46,7 @@ import operator
 import numpy as np
 import log
 import targets
+from functools import reduce
 
 
 # Gender
@@ -134,7 +135,7 @@ class ModifierAction(guicommon.Action):
     def undo(self):
         if isinstance(self.before, dict):
             # Undo reset of multiple modifiers
-            for mName, mVal in self.before.items():
+            for mName, mVal in list(self.before.items()):
                 self.human.getModifier(mName).setValue(mVal)
         else:
             self.modifier.setValue(self.before)
@@ -197,7 +198,7 @@ class Modifier(object):
         factors = self.getFactors(value)
 
         tWeights = getTargetWeights(self.targets, factors, value)
-        for tpath, tWeight in tWeights.items():
+        for tpath, tWeight in list(tWeights.items()):
             self.human.setDetail(tpath, tWeight)
 
         if skipDependencies:
@@ -444,7 +445,7 @@ class ManagedTargetModifier(Modifier):
         path = tuple(path.split('-'))
         for target in targets.getTargets().groups.get(path, []):
             keys = [key
-                    for key, var in target.data.iteritems()
+                    for key, var in target.data.items()
                     if var is not None]
             result.update(keys)
         return result
@@ -462,7 +463,7 @@ class ManagedTargetModifier(Modifier):
         factors = self.getFactors(value)
 
         tWeights = getTargetWeights(self.targets, factors)
-        for tpath, tWeight in tWeights.items():
+        for tpath, tWeight in list(tWeights.items()):
             self.human.setDetail(tpath, tWeight)
 
         if skipDependencies:
@@ -478,7 +479,7 @@ class ManagedTargetModifier(Modifier):
         else:
             return -sum([self.human.getDetail(target[0]) for target in self.l_targets])
 
-    _variables = targets._value_cat.keys()
+    _variables = list(targets._value_cat.keys())
 
     def getFactors(self, value):
         return dict((name, getattr(self.human, name + 'Val'))
@@ -702,11 +703,11 @@ def loadModifiers(filename, human):
     # Attempt to load modifier descriptions
     _tmp = os.path.splitext(filename)
     descFile = _tmp[0]+'_desc'+_tmp[1]
-    hasDesc = OrderedDict([(key,False) for key in lookup.keys()])
+    hasDesc = OrderedDict([(key,False) for key in list(lookup.keys())])
     if os.path.isfile(descFile):
         data = json.load(open(descFile, 'rb'), object_pairs_hook=OrderedDict)
         dCount = 0
-        for mName, mDesc in data.items():
+        for mName, mDesc in list(data.items()):
             try:
                 mod = lookup[mName]
                 mod.description = mDesc
@@ -715,7 +716,7 @@ def loadModifiers(filename, human):
             except:
                 log.warning("Loaded description for %s but modifier does not exist!", mName)
         log.message("Loaded %s modifier descriptions from file %s", dCount, descFile)
-    for mName, mHasDesc in hasDesc.items():
+    for mName, mHasDesc in list(hasDesc.items()):
         if not mHasDesc:
             log.warning("No description defined for modifier %s!", mName)
 

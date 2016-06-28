@@ -225,7 +225,7 @@ class SubdivisionObject(Object3D):
         n = np.hstack((n, np.array([len(vi) - first[-1]])))
         self.nedges[ix] = n.astype(np.uint8)
         try:
-            for i in xrange(len(ix)):
+            for i in range(len(ix)):
                 self.vedge[ix[i],:n[i]] = ei[first[i]:][:n[i]]
         except ValueError as e:
             raise RuntimeError("Pole-count too low, try increasing max_pole: %s" % e)
@@ -503,7 +503,7 @@ def _reverse_n_to_m_map(input, output, offset=0):
     n = first[1:] - first[:-1]
     n_last = len(vi) - first[-1]
     n = np.hstack((n, np.array([n_last])))
-    for i in xrange(len(ix)):
+    for i in range(len(ix)):
         output[ix[i], :n[i]] = offset + fi[first[i]:][:n[i]]
 
 
