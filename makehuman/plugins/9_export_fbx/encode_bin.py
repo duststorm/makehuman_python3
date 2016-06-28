@@ -19,7 +19,7 @@
 # Script copyright (C) 2013 Campbell Barton
 # Modified by Jonas Hauquier for python 2.7 compat and MakeHuman FBX export
 
-import data_types
+from . import data_types
 
 from struct import pack
 import array
@@ -63,7 +63,7 @@ class FBXElem:
         self._props_length = -1
 
     def add_bool(self, data):
-        assert(isinstance(data, (bool, int, long)))
+        assert(isinstance(data, (bool, int)))
         data = bool(data)
         data = pack('?', data)
 
@@ -71,7 +71,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_int16(self, data):
-        assert(isinstance(data, (int, long)))
+        assert(isinstance(data, int))
         data = int(data)
         data = pack('<h', data)
 
@@ -79,7 +79,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_int32(self, data):
-        assert(isinstance(data, (int, long)))
+        assert(isinstance(data, int))
         data = int(data)
         data = pack('<i', data)
 
@@ -87,7 +87,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_int64(self, data):
-        assert(isinstance(data, (int, long)))
+        assert(isinstance(data, int))
         data = int(data)
         data = pack('<q', data)
 
@@ -95,7 +95,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_float32(self, data):
-        assert(isinstance(data, (int, long, float)))
+        assert(isinstance(data, (int, float)))
         data = float(data)
         data = pack('<f', data)
 
@@ -103,7 +103,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_float64(self, data):
-        assert(isinstance(data, (int, long, float)))
+        assert(isinstance(data, (int, float)))
         data = float(data)
         data = pack('<d', data)
 
@@ -118,9 +118,9 @@ class FBXElem:
         self.props.append(data)
 
     def add_string(self, data):
-        if isinstance(data, unicode):
+        if isinstance(data, str):
             data = data.encode('ascii')
-        if isinstance(data, basestring):
+        if isinstance(data, str):
             data = bytes(data)
         assert(isinstance(data, bytes))
         data = pack('<I', len(data)) + data
@@ -129,7 +129,7 @@ class FBXElem:
         self.props.append(data)
 
     def add_string_unicode(self, data):
-        assert(isinstance(data, basestring))
+        assert(isinstance(data, str))
         data = data.encode('utf8')
         data = pack('<I', len(data)) + data
 
@@ -315,7 +315,7 @@ def write(fn, elem_root, version=None):
     assert(elem_root.id == b'')  # If this check fails the elem_root is not a root element
 
     if version is None:
-        import fbx_utils
+        from . import fbx_utils
         version = fbx_utils.FBX_VERSION
 
     with open(fn, 'wb') as f:
