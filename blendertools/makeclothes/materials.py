@@ -80,7 +80,7 @@ def writeMaterial(ob, folder):
                 matfile = writeMaterialFile(fp, mat, name, outdir)
             finally:
                 fp.close()
-            print("%s created" % filepath)
+            print(("%s created" % filepath))
             return os.path.basename(filepath)
     return None
 
@@ -137,7 +137,7 @@ def writeMaterialFile(fp, mat, name, outdir):
             useDisplacement = "true"
 
         trgpath = os.path.join(outdir, texpath)
-        print("Copy texture %s => %s" % (srcpath, trgpath))
+        print(("Copy texture %s => %s" % (srcpath, trgpath)))
         try:
             shutil.copy(srcpath, trgpath)
         except FileNotFoundError:
