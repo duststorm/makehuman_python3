@@ -93,7 +93,7 @@ class Vector3(object):
         if isinstance(other, Vector3):
             return Vector3(self.x+other.x, self.y+other.y, self.z+other.z)
         else:
-            raise TypeError, "unsupported operand type for +"
+            raise TypeError("unsupported operand type for +")
             
     def add(self, other):
         '''Faster in-place addition'''
@@ -106,7 +106,7 @@ class Vector3(object):
         if isinstance(other, Vector3):
             return Vector3(self.x-other.x, self.y-other.y, self.z-other.z)
         else:
-            raise TypeError, "unsupported operand type for -"
+            raise TypeError("unsupported operand type for -")
             
     def sub(self, other):
         '''Faster in-place subtraction'''
@@ -169,7 +169,7 @@ class Obj(object):
             e = Exception("Target contains more vertices (%d) than this obj (%d)."% (target.getMaxVertIndex(), self.getNbVerts()))
             e.errCode = -1
             raise e
-        for index, vertDiff in target.verts.items():
+        for index, vertDiff in list(target.verts.items()):
             self.verts[index].sub(vertDiff)
             
     def addTarget(self, target):
@@ -178,7 +178,7 @@ class Obj(object):
             e = Exception("Target contains more vertices (%d) than this obj (%d)."% (target.getMaxVertIndex(), self.getNbVerts()))
             e.errCode = -1
             raise e
-        for index, vertDiff in target.verts.items():
+        for index, vertDiff in list(target.verts.items()):
             self.verts[index].add(vertDiff)
         
     def _loadVerts(self, path):
