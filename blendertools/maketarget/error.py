@@ -71,7 +71,7 @@ class MHError(Exception):
     def __init__(self, value):
         global theMessage
         theMessage = value
-        print("ERROR:", theMessage)
+        print(("ERROR:", theMessage))
         bpy.ops.mh.error('INVOKE_DEFAULT')
 
     def __str__(self):

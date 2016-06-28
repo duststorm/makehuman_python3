@@ -47,7 +47,7 @@ bl_info = {
     "category": "MakeHuman"}
 
 if "bpy" in locals():
-    print("Reloading maketarget v %d.%d.%d" % bl_info["version"])
+    print(("Reloading maketarget v %d.%d.%d" % bl_info["version"]))
     import imp
 
     imp.reload(mh)
@@ -64,7 +64,7 @@ if "bpy" in locals():
     #imp.reload(perfect)
     imp.reload(export_mh_obj)
 else:
-    print("Loading maketarget v %d.%d.%d" % bl_info["version"])
+    print(("Loading maketarget v %d.%d.%d" % bl_info["version"]))
     import bpy
     import os
     from bpy.props import *
