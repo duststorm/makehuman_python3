@@ -230,7 +230,7 @@ class Human(guicommon.Object, animation.AnimatedMesh):
         mesh = self.meshData
         group_mask = np.ones(len(mesh._faceGroups), dtype=bool)
         for g in mesh._faceGroups:
-            if g.name.startswith(b'joint-') or g.name.startswith(b'helper-'):
+            if g.name.startswith('joint-') or g.name.startswith('helper-'):
                 group_mask[g.idx] = False
         face_mask = group_mask[mesh.group]
         self._staticFaceMask = face_mask
