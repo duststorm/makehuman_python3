@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/pythons
 # -*- coding: utf-8 -*-
 
 """ 
