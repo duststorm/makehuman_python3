@@ -69,17 +69,17 @@ def compileMesh(path):
 
     try:
         npzpath = os.path.splitext(path)[0] + '.npz'
-        #print 'Compiling mesh to binary: %s' % npzpath
+        #print ('Compiling mesh to binary: {}'.format(npzpath))
         try:
             files3d.loadTextMesh(obj, path)
         except:
-            print('Could not load OBJ file %s. Perhaps it mixes tris and quads.' % path)
+            print('Could not load OBJ file {}. Perhaps it mixes tris and quads.'.format(path))
             #import traceback
             #traceback.print_exc(file=sys.stdout)
             return False
         files3d.saveBinaryMesh(obj, npzpath)
     except:
-        print('Unable to save compiled mesh for file %s' % path)
+        print('Unable to save compiled mesh for file {}'.format(path))
         #import traceback
         #traceback.print_exc(file=sys.stdout)
         return False
@@ -92,6 +92,6 @@ if __name__ == '__main__':
     allOBJs = allFiles[0]
     for (i, path) in enumerate(allOBJs):
         compileMesh(path)
-        print("[%.0f%% done] converted mesh %s" % (100*(float(i)/float(len(allOBJs))), path))
+        print("{:.1f}% done converted mesh {}".format(100*(float(i)/float(len(allOBJs))), path))
 
     print("All done.")
