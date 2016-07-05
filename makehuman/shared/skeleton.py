@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -93,7 +93,7 @@ class Skeleton(object):
         import getpath
         import os
         self._clear()
-        skelData = json.load(open(filepath, 'rb'), object_pairs_hook=OrderedDict)
+        skelData = json.load(open(filepath, 'r'), object_pairs_hook=OrderedDict)
 
         self.name = skelData.get("name", self.name)
         self.version = int(skelData.get("version", self.version))
