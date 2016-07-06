@@ -77,7 +77,7 @@ def downloadFromFTP(ftp, filePath, destination):
         downloaded[0] += len(data)
         percentage = 100 * float(downloaded[0]) / fileSize
         if destination:
-            sys.stdout.write("  Downloaded %d%% of %d bytes\r" % (percentage, fileSize))
+            sys.stdout.write("  Downloaded {:0.1f}% of {} bytes\r".format(percentage, fileSize))
 
         if percentage >= 100 and destination:
             sys.stdout.write('\n')
@@ -95,9 +95,9 @@ def downloadFile(ftp, filePath, destination, fileProgress):
     if os.path.dirname(destination) and not os.path.isdir(os.path.dirname(destination)):
         os.makedirs(os.path.dirname(destination))
 
-    #print "[%d%% done] Downloading file %s to %s" % (fileProgress, url, filename)
-    print(("[%d%% done] Downloading file %s" % (fileProgress, os.path.basename(destination))))
-    print(("             %s ==> %s" % (filePath, destination)))
+    #print ("[{:0.1f}% done] Downloading file {} to {}".format(fileProgress, url, filename))
+    print("[{:0.1f}% done] Downloading file {}".format(fileProgress, os.path.basename(destination)))
+    print("             {} ==> {}".format(filePath, destination))
     downloadFromFTP(ftp, filePath, destination)
 
 def parseContentsFile(filename):
@@ -122,7 +122,7 @@ def writeContentsFile(filename, contents):
     from codecs import open
     f = open(filename, 'w', encoding="utf-8")
     for fPath, mtime in list(contents.items()):
-        f.write("%s %s\n" % (fPath, mtime))
+        f.write("{} {}\n".format(fPath, mtime))
     f.close()
 
 def getNewFiles(oldContents, newContents, destinationFolder):
@@ -156,7 +156,7 @@ def getFTPContents(ftp):
             currentProgress = 0.0
 
         percentage = 100 * currentProgress
-        sys.stdout.write("[%d%% done] Getting repository contents\r" % percentage)
+        sys.stdout.write("[{:0.1f}% done] Getting repository contents\r".format(percentage))
         sys.stdout.flush()
 
         path = ftp.pwd()    # TODO relpath to root path
@@ -176,13 +176,13 @@ def getFTPContents(ftp):
             filesFraction = 1.0/len(filesList)
         result = []
         for fname in filesList:
-            mtime = ftp.sendcmd('MDTM %s' % fname)
+            mtime = ftp.sendcmd('MDTM {}'.format(fname))
             mtime = int(mtime[3:].strip())
-            #mtime = int(time.mktime(time.strptime(mtime[3:].strip(), '%Y%m%d%H%M%S')))
+            #mtime = int(time.mktime(time.strptime(mtime[3:].strip(), '%Y%m%d%H%M{}')))
             fpath = os.path.join(path, fname)
             result.append( (fpath, mtime) )
             percentage += 100 * (filesFraction * subFraction)
-            sys.stdout.write("[%d%% done] Getting repository contents\r" % percentage)
+            sys.stdout.write("[{:0.1f}% done] Getting repository contents\r".format(percentage))
             sys.stdout.flush()
 
         for dir_ in directories:
@@ -212,7 +212,7 @@ def downloadFromHTTP(url, destination):
     def chunk_report(bytes_so_far, chunk_size, total_size):
         percentage = float(bytes_so_far) / total_size
         percentage = round(percentage*100, 2)
-        sys.stdout.write("  Downloaded %d%% of %d bytes\r" % (percentage, total_size))
+        sys.stdout.write("  Downloaded {:0.1f}% of {} bytes\r".format(percentage, total_size))
         sys.stdout.flush()
 
         if bytes_so_far >= total_size:
@@ -239,7 +239,7 @@ def downloadFromHTTP(url, destination):
     f = open(destination, 'wb')
     response = urllib.request.urlopen(url)
     if response.getcode() != 200:
-        raise RuntimeError('Failed to download file %s (error code %s)' % (url, response.getcode()))
+        raise RuntimeError('Failed to download file {} (error code {})' % (url, response.getcode()))
     chunk_read(response, report_hook=chunk_report)
     f.close()
 
@@ -286,14 +286,14 @@ if __name__ == '__main__':
     # Obtain MH version to download assets for
     version = getVersion()
 
-    print(('Refreshing assets from repository "%s" (version %s)' % (repo, version)))
+    print('Refreshing assets from repository "{}" (version {})'.format(repo, version))
 
     ftpPath = os.path.join(ftpPath, version.lstrip('/'), repo.lstrip('/'))
     ftpPath = os.path.normpath(ftpPath)
     ## Use simple sync mechanism, maybe in the future we can use rsync over http?
     # Download contents list
     baseName = os.path.basename(ftpPath)
-    contentsFile = getSysPath('%s_%s_contents.txt' % (baseName, version.replace('.','-')))
+    contentsFile = getSysPath('{}_{}_contents.txt'.format(baseName, version.replace('.','-')))
     if os.path.isfile(contentsFile):
         # Parse previous contents file
         oldContents = parseContentsFile(contentsFile)
@@ -316,9 +316,9 @@ if __name__ == '__main__':
         filename = os.path.basename(archiveUrl)
         zipDest = os.path.join(getSysPath(), filename)
         if os.path.exists(zipDest):
-            print(("Archive %s already exists, not downloading again." % zipDest))
+            print("Archive {} already exists, not downloading again.".format(zipDest))
             sys.exit()
-        print(("Downloading archive from HTTP (%s)" % archiveUrl))
+        print("Downloading archive from HTTP {}".format(archiveUrl))
         # Download and extract archive
         downloadFromHTTP(archiveUrl, zipDest)
         print("Extracting zip archive...")
@@ -341,7 +341,7 @@ if __name__ == '__main__':
         filename = os.path.join(destinationFolder, filePath.lstrip('/'))
 
         if not isSubPath(filename, destinationFolder):
-            raise RuntimeError("ERROR: File destinations are jailed inside the sys data path (%s), destination path (%s) tries to escape!" % (destinationFolder, filename))
+            raise RuntimeError("ERROR: File destinations are jailed inside the sys data path ({}), destination path ({}) tries to escape!".format((destinationFolder, filename)))
 
         if DONTREMOVE:
             newFile = filename + '.removedasset'
@@ -350,9 +350,9 @@ if __name__ == '__main__':
                 newFile = filename + '.' + str(i) + '.removedasset'
                 i = i+1
             shutil.move(filename, newFile)
-            print(("Moved removed file to %s (removed from FTP)" % newFile))
+            print("Moved removed file to {} (removed from FTP)".format(newFile))
         else:
-            print(("Removing file %s (removed from FTP)" % filename))
+            print("Removing file {} (removed from FTP)".format(filename))
             os.remove(filename)
 
     TOTAL_FILES = len(toDownload)
@@ -362,7 +362,7 @@ if __name__ == '__main__':
         filename = os.path.join(destinationFolder, filePath.lstrip('/'))
 
         if not isSubPath(filename, destinationFolder):
-            raise RuntimeError("ERROR: File destinations are jailed inside the sys data path (%s), destination path (%s) tries to escape!" % (destinationFolder, filename))
+            raise RuntimeError("ERROR: File destinations are jailed inside the sys data path ({}), destination path ({}) tries to escape!".format((destinationFolder, filename)))
 
         if os.path.exists(filename) and DONTREMOVE:
             newFile = filename + '.oldasset'
@@ -371,7 +371,7 @@ if __name__ == '__main__':
                 newFile = filename + '.' + str(i) + '.oldasset'
                 i = i+1
             shutil.move(filename, newFile)
-            print(("Moved old version of updated file to %s" % newFile))
+            print("Moved old version of updated file to {}".format(newFile))
 
         fileProgress = round(100 * float(fIdx)/TOTAL_FILES, 2)
         downloadFile(ftp, filePath, filename, fileProgress)
