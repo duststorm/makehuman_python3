@@ -636,7 +636,7 @@ class Skeleton(object):
         return self.boneslist
 
     def __cacheGetBones(self):
-        from queue import deque
+        from collections import deque
 
         result = []
         queue = deque(self.roots)
