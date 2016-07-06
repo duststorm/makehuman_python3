@@ -230,6 +230,16 @@ class Human(guicommon.Object, animation.AnimatedMesh):
         mesh = self.meshData
         group_mask = np.ones(len(mesh._faceGroups), dtype=bool)
         for g in mesh._faceGroups:
+            """
+            Make sure we are using strings not bytes here. There may be better approach when
+            The code has been entirely upgraded to Phython 3, but legacy gets us here with bytes somethimes
+            and strings other times.
+            Running compile_models.py seems to get here with strings.
+            Running makehuman.py seems to get here with bytes  
+            TODO:  Assure we always get here with strings NOT bytes
+            """
+            if(type(g.name) is bytes):
+                g.name = g.name.decode('utf-8')
             if g.name.startswith('joint-') or g.name.startswith('helper-'):
                 group_mask[g.idx] = False
         face_mask = group_mask[mesh.group]
