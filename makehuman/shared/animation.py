@@ -524,7 +524,7 @@ class VertexBoneWeights(object):
         """
         from collections import OrderedDict
         import json
-        weightsData = json.load(open(filename, 'rb'), object_pairs_hook=OrderedDict)
+        weightsData = json.load(open(filename, 'r'), object_pairs_hook=OrderedDict)
         log.message("Loaded vertex weights %s from file %s", weightsData.get('name', 'unnamed'), filename)
         result = VertexBoneWeights(weightsData['weights'], vertexCount, rootBone)
         result.license.fromJson(weightsData)
