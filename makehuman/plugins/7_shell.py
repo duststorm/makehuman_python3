@@ -45,8 +45,8 @@ from core import G
 import log
 from PyQt4 import QtCore, QtGui
 
-import ipythonconsole
-
+#import ipythonconsole
+import qtconsole
 MAX_COMPLETIONS = -1
 
 class ShellTextEdit(gui.TextEdit):
