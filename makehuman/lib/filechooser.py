@@ -214,7 +214,7 @@ class FileSort(Sorter):
         Override Sorter.getFields to append the MetaFields at the result.
         """
 
-        return super(FileSort, self).fields() + self.metaFields
+        return list(super(FileSort, self).fields())  + self.metaFields
 
     def getMethod(self, field):
         """
