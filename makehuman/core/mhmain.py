@@ -73,7 +73,7 @@ def outFile(path):
     except:
         if os.path.exists(tmppath):
             os.remove(tmppath)
-        log.error('unable to save file %s', path, exc_info=True)
+        log.error('unable to save file {}'.format(path, exc_info=True))
 
 @contextlib.contextmanager
 def inFile(path):
@@ -83,10 +83,10 @@ def inFile(path):
         if not os.path.isfile(path):
             yield []
             return
-        with open(path, 'rU', encoding="utf-8") as f:
+        with open(path, 'r', encoding="utf-8") as f:
             yield f
     except:
-        log.error('Failed to load file %s', path, exc_info=True)
+        log.error('Failed to load file {}'.format(path, exc_info=True))
 
 class PluginCheckBox(gui.CheckBox):
 
@@ -520,7 +520,7 @@ class MHApplication(gui3d.Application, mh.Application):
         try:
             name, ext = os.path.splitext(os.path.basename(path))
             if name not in self.getSetting('excludePlugins'):
-                log.message('Importing plugin %s', name)
+                log.message('Importing plugin {}'.format(name))
                 #module = imp.load_source(name, path)
 
                 module = None
@@ -531,14 +531,14 @@ class MHApplication(gui3d.Application, mh.Application):
                     if fp:
                         fp.close()
                 if module is None:
-                    log.message("Could not import plugin %s", name)
+                    log.message("Could not import plugin {}".format(name))
                     return
 
                 self.modules[name] = module
-                log.message('Imported plugin %s', name)
-                log.message('Loading plugin %s', name)
+                log.message('Imported plugin {}'.format(name))
+                log.message('Loading plugin {}'.format(name))
                 module.load(self)
-                log.message('Loaded plugin %s', name)
+                log.message('Loaded plugin {}'.format(name))
 
                 # Process all non-user-input events in the queue to make sure
                 # any callAsync events are run.
@@ -546,7 +546,7 @@ class MHApplication(gui3d.Application, mh.Application):
             else:
                 self.modules[name] = None
         except Exception as _:
-            log.warning('Could not load %s', name, exc_info=True)
+            log.warning('Could not load {}'.format(name, exc_info=True))
 
     def unloadPlugins(self):
 
@@ -554,11 +554,11 @@ class MHApplication(gui3d.Application, mh.Application):
             if module is None:
                 continue
             try:
-                log.message('Unloading plugin %s', name)
+                log.message('Unloading plugin {}'.format(name))
                 module.unload(self)
-                log.message('Unloaded plugin %s', name)
+                log.message('Unloaded plugin {}'.format(name))
             except Exception as _:
-                log.warning('Could not unload %s', name, exc_info=True)
+                log.warning('Could not unload {}'.format(name, exc_info=True))
 
     def getLoadedPlugins(self):
         """
@@ -695,7 +695,7 @@ class MHApplication(gui3d.Application, mh.Application):
         import targets
         #import getpath
         for target in targets.getTargets().findTargets('macrodetails'):
-            #log.debug('Preloading target %s', getpath.getRelativePath(target.path))
+            log.debug('Preloading target {}'.format(getpath.getRelativePath(target.path)))
             algos3d.getTarget(self.selectedHuman.meshData, target.path)
 
     def loadFinish(self):
@@ -858,20 +858,20 @@ class MHApplication(gui3d.Application, mh.Application):
             self.undoStack.append(action)
             del self.redoStack[:]
             self.currentFile.changed()
-            log.message('do %s', action.name)
+            log.message('do {}'.format(action.name))
             self.syncUndoRedo()
 
     def did(self, action):
         self.undoStack.append(action)
         self.currentFile.changed()
         del self.redoStack[:]
-        log.message('did %s', action.name)
+        log.message('did {}'.format(action.name))
         self.syncUndoRedo()
 
     def undo(self):
         if self.undoStack:
             action = self.undoStack.pop()
-            log.message('undo %s', action.name)
+            log.message('undo {}'.format(action.name))
             action.undo()
             self.redoStack.append(action)
             self.currentFile.changed()
@@ -880,7 +880,7 @@ class MHApplication(gui3d.Application, mh.Application):
     def redo(self):
         if self.redoStack:
             action = self.redoStack.pop()
-            log.message('redo %s', action.name)
+            log.message('redo {}'.format(action.name))
             action.do()
             self.undoStack.append(action)
             self.currentFile.changed()
@@ -1007,7 +1007,7 @@ class MHApplication(gui3d.Application, mh.Application):
 
             if len(lineData) > 0:
                 if lineData[0] == "version":
-                    log.message('Theme %s version %s', theme, lineData[1])
+                    log.message('Theme %s version {}'.format(theme, lineData[1]))
                 elif lineData[0] == "color":
                     if lineData[1] == "clear":
                         self.clearColor[:] = [float(val) for val in lineData[2:5]]
@@ -1045,7 +1045,7 @@ class MHApplication(gui3d.Application, mh.Application):
 
         if update_log:
             self.log_window.updateView()
-        log.debug("Loaded theme %s", mh.getSysDataPath('themes/'+theme+'.mht'))
+        log.debug("Loaded theme {}".format(mh.getSysDataPath('themes/'+theme+'.mht')))
 
         try:
             f = open(mh.getSysDataPath('themes/%s.qss' % theme), 'r')
@@ -1055,7 +1055,7 @@ class MHApplication(gui3d.Application, mh.Application):
             for widget in self.allWidgets():
                 if isinstance(widget, gui.Slider):
                     widget.setStyleSheet(qStyle)
-            log.debug("Loaded Qt style %s", mh.getSysDataPath('themes/'+theme+'.qss'))
+            log.debug("Loaded Qt style {}".format(mh.getSysDataPath('themes/'+theme+'.qss')))
         except:
             self.setStyleSheet("")
             # Also set stylesheet on custom slider style
@@ -1098,7 +1098,7 @@ class MHApplication(gui3d.Application, mh.Application):
             return os.path.join(mh.getSysDataPath("themes/default/"), folder, id)
 
     def setLanguage(self, lang):
-        log.debug("Setting language to %s", lang)
+        log.debug("Setting language to {}".format(lang))
         language.language.setLanguage(lang)
         self.setSetting('rtl', language.language.rtl)
 
@@ -1463,7 +1463,7 @@ class MHApplication(gui3d.Application, mh.Application):
             raise RuntimeError("Cannot save target to file %s, expected a path to a .target file." % path)
         human = self.selectedHuman
         algos3d.saveTranslationTarget(human.meshData, path)
-        log.message("Full target exported to %s", path)
+        log.message("Full target exported to {}".format(path))
 
     def grabScreen(self):
         import datetime
@@ -1473,7 +1473,7 @@ class MHApplication(gui3d.Application, mh.Application):
         grabName = datetime.datetime.now().strftime('grab_%Y-%m-%d_%H.%M.%S.png')
         filename = os.path.join(grabPath, grabName)
         mh.grabScreen(0, 0, G.windowWidth, G.windowHeight, filename)
-        self.status("Screengrab saved to %s", filename)
+        self.status("Screengrab saved to {}".format(filename))
 
     def resetHuman(self):
         if self.currentFile.modified:
@@ -1724,7 +1724,7 @@ class MHApplication(gui3d.Application, mh.Application):
         # Necessary because otherwise setting back to default theme causes crash
         log.message("Initializing default theme first.")
         self.setTheme("default")
-        log.debug("Using Qt system style %s", self.getLookAndFeel())
+        log.debug("Using Qt system style {}".format(self.getLookAndFeel()))
 
         self.createActions()
         self.syncUndoRedo()
