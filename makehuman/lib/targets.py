@@ -64,7 +64,10 @@ _categories = [cat for cat, value in _cat_data]
 _value_cat = dict([(value, cat)
                    for cat, values in _cat_data
                    for value in values])
-del cat, value, values
+
+# Not sure whether these were even in scope in first place??
+# Removing delete fixes some 0_Modeling plugin loads
+#del cat, value, values
 
 
 class Component(object):
