@@ -521,7 +521,7 @@ class MHApplication(gui3d.Application, mh.Application):
             name, ext = os.path.splitext(os.path.basename(path))
             if name not in self.getSetting('excludePlugins'):
                 log.message('Importing plugin {}'.format(name))
-                #module = imp.load_source(name, path)
+                module = imp.load_source(name, path)
 
                 module = None
                 fp, pathname, description = imp.find_module(name, ["plugins/"])
@@ -546,7 +546,7 @@ class MHApplication(gui3d.Application, mh.Application):
             else:
                 self.modules[name] = None
         except Exception as _:
-            log.warning('Could not load {}'.format(name, exc_info=True))
+            log.warning('Could not load %s', name, exc_info=True)
 
     def unloadPlugins(self):
 
@@ -1007,7 +1007,7 @@ class MHApplication(gui3d.Application, mh.Application):
 
             if len(lineData) > 0:
                 if lineData[0] == "version":
-                    log.message('Theme %s version {}'.format(theme, lineData[1]))
+                    log.message('Theme %s version %s', theme, lineData[1])
                 elif lineData[0] == "color":
                     if lineData[1] == "clear":
                         self.clearColor[:] = [float(val) for val in lineData[2:5]]
