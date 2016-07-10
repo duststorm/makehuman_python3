@@ -98,4 +98,4 @@ if __name__ == '__main__':
         for path in allImages:
             path = path.replace('\\','/')
             f.write(path + '\n')
-    print("All done.")
+    print("All done!\n{} targets. {} png images.".format(len(allFiles[0]), len(allFiles[1])))
