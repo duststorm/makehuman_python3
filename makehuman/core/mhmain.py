@@ -521,24 +521,28 @@ class MHApplication(gui3d.Application, mh.Application):
             name, ext = os.path.splitext(os.path.basename(path))
             if name not in self.getSetting('excludePlugins'):
                 log.message('Importing plugin {}'.format(name))
-                module = imp.load_source(name, path)
+                #module = imp.load_source(name, path)
 
                 module = None
                 fp, pathname, description = imp.find_module(name, ["plugins/"])
                 try:
+                    log.message('    fp: {}'.format(fp))
+                    log.message('    pathname {}'.format(pathname))
+                    log.message('    description {}'.format(description))
                     module = imp.load_module(name, fp, pathname, description)
                 finally:
                     if fp:
+                        log.message('Closing fp: {}'.format(fp))
                         fp.close()
                 if module is None:
-                    log.message("Could not import plugin {}".format(name))
+                    log.message("Module is None".format(name))
                     return
 
                 self.modules[name] = module
                 log.message('Imported plugin {}'.format(name))
                 log.message('Loading plugin {}'.format(name))
                 module.load(self)
-                log.message('Loaded plugin {}'.format(name))
+                log.message('module.load succeded {}\n'.format(name))
 
                 # Process all non-user-input events in the queue to make sure
                 # any callAsync events are run.
@@ -546,7 +550,7 @@ class MHApplication(gui3d.Application, mh.Application):
             else:
                 self.modules[name] = None
         except Exception as _:
-            log.warning('Could not load %s', name, exc_info=True)
+            log.warning('Load Exception as _ %s\n', name, exc_info=True)
 
     def unloadPlugins(self):
 
@@ -1054,7 +1058,7 @@ class MHApplication(gui3d.Application, mh.Application):
             for widget in self.allWidgets():
                 if isinstance(widget, gui.Slider):
                     widget.setStyleSheet(qStyle)
-            log.debug("Loaded Qt style {}".format(mh.getSysDataPath('themes/'+theme+'.qss')))
+            log.debug("Loaded Qt style %s", mh.getSysDataPath('themes/'+theme+'.qss'))
         except:
             self.setStyleSheet("")
             # Also set stylesheet on custom slider style
