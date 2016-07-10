@@ -1004,7 +1004,6 @@ class MHApplication(gui3d.Application, mh.Application):
         update_log = False
         for data in f.readlines():
             lineData = data.split()
-
             if len(lineData) > 0:
                 if lineData[0] == "version":
                     log.message('Theme %s version %s', theme, lineData[1])
