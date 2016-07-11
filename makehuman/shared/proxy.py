@@ -1142,12 +1142,12 @@ def _getFilePath(filename, folder = None, altExtensions=None):
         for aExt in altExtensions:
             if aExt.startswith('.'):
                 aExt = aExt[1:]
-            aFile = os.path.splitext(filename)[0]+'.'+aExt
+            aFile = str(os.path.splitext(filename)[0])+'.'+aExt
             aPath = _getFilePath(aFile, folder, altExtensions=None)
             if os.path.isfile(aPath):
                 # Path found, return result with original extension
-                orgExt = os.path.splitext(filename)[1]
-                path = os.path.splitext(aPath)[0]+orgExt
+                orgExt = str(os.path.splitext(filename)[1])
+                path = str(os.path.splitext(aPath)[0])+orgExt
                 return getpath.formatPath(path)
 
     if not filename or not isinstance(filename, str):
