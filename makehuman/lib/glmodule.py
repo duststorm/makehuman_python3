@@ -263,17 +263,23 @@ def A(*args):
     return np.array(list(args), dtype=np.float32)
 
 def OnInit():
+    log.message("GL.VENDOR: " + str(glGetString(GL_VENDOR)))
+    log.message("GL.RENDERER: " + str(glGetString(GL_RENDERER)))
+    log.message("GL.VERSION: " + str(glGetString(GL_VERSION)))
+    log.message("GLSL.VERSION: " + repr(Shader.glslVersionStr()))
+
+    """
     try:
         # Start with writing relevant info to the debug dump in case stuff goes
         # wrong at a later time
-        debugdump.dump.appendGL()
+        #debugdump.dump.appendGL()
         debugdump.dump.appendMessage("GL.VENDOR: " + glGetString(GL_VENDOR))
         debugdump.dump.appendMessage("GL.RENDERER: " + glGetString(GL_RENDERER))
         debugdump.dump.appendMessage("GL.VERSION: " + glGetString(GL_VERSION))
         debugdump.dump.appendMessage("GLSL.VERSION: " + Shader.glslVersionStr())
     except Exception as e:
         log.error("Failed to write GL debug info to debug dump: %s", format(str(e)))
-
+    """
     global have_multisample
     if G.args.get('nomultisampling', False):
         have_multisample = False
