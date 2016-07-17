@@ -267,6 +267,7 @@ class Shader(object):
     @classmethod
     def glslVersionStr(cls):
         cls.glslVersion()
+        cls._glsl_version_str = OpenGL.GL.glGetString(OpenGL.GL.GL_SHADING_LANGUAGE_VERSION)
         return cls._glsl_version_str
 
     @classmethod
@@ -278,6 +279,9 @@ class Shader(object):
                 return cls._glsl_version
 
             cls._glsl_version_str = OpenGL.GL.glGetString(OpenGL.GL.GL_SHADING_LANGUAGE_VERSION)
+            # true string rather than byte string
+            cls._glsl_version_str = cls._glsl_version_str.decode("utf-8")
+            log.debug(cls._glsl_version_str)
             if cls._glsl_version_str:
                 import re
                 glsl_version = re.search('[0-9]+\.[0-9]+', cls._glsl_version_str).group(0)
