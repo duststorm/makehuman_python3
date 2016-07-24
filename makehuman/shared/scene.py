@@ -205,7 +205,7 @@ class Scene(object):
         log.debug('Loading scene file: %s', path)
 
         try:
-            hfile = open(path, 'r')
+            hfile = open(path, 'rb')
         except IOError as e:
             log.warning('Could not load %s: %s', path, e[1])
             return False
