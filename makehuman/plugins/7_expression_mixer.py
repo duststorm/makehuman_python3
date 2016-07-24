@@ -150,7 +150,7 @@ class ExpressionMixerTaskView(gui3d.TaskView):
         self.base_bvh = bvh.load(getpath.getSysDataPath('poseunits/face-poseunits.bvh'), allowTranslation="none")
         self.base_anim = self.base_bvh.createAnimationTrack(self.human.getBaseSkeleton(), name="Expression-Face-PoseUnits")
 
-        poseunit_json = json.load(open(getpath.getSysDataPath('poseunits/face-poseunits.json'),'rb'), object_pairs_hook=OrderedDict)
+        poseunit_json = json.load(open(getpath.getSysDataPath('poseunits/face-poseunits.json'),'r'), object_pairs_hook=OrderedDict)
         self.poseunit_names = poseunit_json['framemapping']
         log.message('unit pose frame count:%s', len(self.poseunit_names))
 

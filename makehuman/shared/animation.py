@@ -292,7 +292,7 @@ class Pose(AnimationTrack):
         """
         from collections import OrderedDict
         import json
-        mhupb = json.load(open(filename, 'rb'), object_pairs_hook=OrderedDict)
+        mhupb = json.load(open(filename, 'r'), object_pairs_hook=OrderedDict)
         self.name = mhupb['name']
         self.description = mhupb.get('description', '')
         self.tags = set([t.lower() for t in mhupb.get('tags', [])])

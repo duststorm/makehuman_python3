@@ -1449,7 +1449,7 @@ def load(filename, mesh=None):
 
 def peekMetadata(filename):
     import json
-    skelData = json.load(open(filename, 'rb'))
+    skelData = json.load(open(filename, 'r'))
     desc = skelData.get("description", "")
     name = skelData.get("name", "Skeleton")
     tags = set( [s.lower() for s in skelData.get("tags", [])] )
