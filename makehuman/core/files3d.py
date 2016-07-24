@@ -182,16 +182,21 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     maxFaces:
       *uint* Number of faces per vertex (pole), None for default (min 4)
     """
-    name = os.path.basename(path)
+    name = str(os.path.basename(path))
     if obj is None:
         obj = module3d.Object3D(name)
     if maxFaces:
         obj.MAX_FACES = maxFaces
 
-    obj.path = path
+    obj.path = str(path)
 
     try:
-        npzpath = os.path.splitext(path)[0] + '.npz'
+        npzpath = os.path.splitext(path)[0]
+        if type(npzpath) is bytes:
+            npzpath = npzpath.decode('utf-8') + '.npz'
+        else:
+            npzpath = npzpath + '.npz'
+
         try:
             if not os.path.isfile(npzpath):
                 log.message('compiled file missing: %s', npzpath)

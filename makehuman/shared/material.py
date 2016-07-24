@@ -327,6 +327,8 @@ class Material(object):
         """
         Parse .mhmat file and set as the properties of this material.
         """
+        if type(filename) is bytes:
+            filename = filename.decode('utf-8')
         from codecs import open
         log.debug("Loading material from file %s", filename)
         try:
