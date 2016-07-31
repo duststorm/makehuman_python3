@@ -59,7 +59,7 @@ def cosineInterpolate(v1, v2, alpha):
     When you have more than 2 points two interpolate (for example following a path), this is a better
     choice than a linear interpolator.
     """
-    alpha2 = (1 - math.cos(alpha * math.pi)) / 2
+    alpha2 = (1 - math.cos(alpha * math.pi)) / 2.0
     return v1 + alpha2 * (v2 - v1)
 
 def cubicInterpolate(v0, v1, v2, v3, alpha):
