@@ -127,7 +127,7 @@ class VectorUniform(Uniform):
         if len(self.dims) > 1:
             self.glfunc(self.index, 1, GL_TRUE, values)
         else:
-            self.glfunc(self.index, len(values)/self.dims[0], values)
+            self.glfunc(self.index, len(values)//self.dims[0], values)
 
     def update(self, pgm):
         values = np.zeros(self.dims, dtype=self.dtype)
