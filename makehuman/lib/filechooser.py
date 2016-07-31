@@ -75,8 +75,8 @@ class ThumbnailCache(object):
         pwidth = pixmap.width()
         pheight = pixmap.height()
         if pwidth > width or pheight > height:
-            x0 = max(0, (pwidth - width) / 2)
-            y0 = max(0, (pheight - height) / 2)
+            x0 = max(0, (pwidth - width) // 2)
+            y0 = max(0, (pheight - height) // 2)
             pixmap = pixmap.copy(x0, y0, width, height)
         return pixmap
 
