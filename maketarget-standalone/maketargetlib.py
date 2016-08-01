@@ -216,7 +216,7 @@ class Obj(object):
     def write(self, outPath):
         '''Writes full .obj back to file using altered vertices and original data from the obj.'''
         outfile = open(outPath, 'wb') # write binary to enforce unix line-endings on windows
-        infile = open(self.filepath, 'r')
+        infile = open(self.filepath, 'rU')
         vertsWritten = False
         inData = infile.readline()
         while inData:

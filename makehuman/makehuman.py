@@ -194,7 +194,7 @@ def get_revision_dirstate_parent(folder=None):
     # First fallback: try to parse the dirstate file in .hg manually
     import binascii
 
-    dirstatefile = open(getHgRoot('.hg/dirstate'), 'r')
+    dirstatefile = open(getHgRoot('.hg/dirstate'), 'rU')
     st = dirstatefile.read(40)
     dirstatefile.close()
     l = len(st)
@@ -206,7 +206,7 @@ def get_revision_dirstate_parent(folder=None):
 
     # Build mapping of nodeid to local revision number
     node_rev_map = dict()
-    revlogfile = open(getHgRoot('.hg/store/00changelog.i'), 'r')
+    revlogfile = open(getHgRoot('.hg/store/00changelog.i'), 'rU')
     st = revlogfile.read(32)
 
     rev_idx = 0
@@ -229,7 +229,7 @@ def get_revision_dirstate_parent(folder=None):
 def get_revision_cache_tip(folder=None):
     # Second fallback: try to parse the cache file in .hg manually
     # Retrieves revision of tip, which might not actually be the working dir parent revision
-    cachefile = open(getHgRoot('.hg/cache/tags'), 'r')
+    cachefile = open(getHgRoot('.hg/cache/tags'), 'rU')
     for line in iter(cachefile):
         if line == "\n":
             break

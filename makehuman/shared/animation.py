@@ -292,7 +292,7 @@ class Pose(AnimationTrack):
         """
         from collections import OrderedDict
         import json
-        mhupb = json.load(open(filename, 'r'), object_pairs_hook=OrderedDict)
+        mhupb = json.load(open(filename, 'rU'), object_pairs_hook=OrderedDict)
         self.name = mhupb['name']
         self.description = mhupb.get('description', '')
         self.tags = set([t.lower() for t in mhupb.get('tags', [])])
@@ -524,7 +524,7 @@ class VertexBoneWeights(object):
         """
         from collections import OrderedDict
         import json
-        weightsData = json.load(open(filename, 'r'), object_pairs_hook=OrderedDict)
+        weightsData = json.load(open(filename, 'rU'), object_pairs_hook=OrderedDict)
         log.message("Loaded vertex weights %s from file %s", weightsData.get('name', 'unnamed'), filename)
         result = VertexBoneWeights(weightsData['weights'], vertexCount, rootBone)
         result.license.fromJson(weightsData)

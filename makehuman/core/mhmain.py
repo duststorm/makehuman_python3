@@ -83,7 +83,7 @@ def inFile(path):
         if not os.path.isfile(path):
             yield []
             return
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, 'rU', encoding="utf-8") as f:
             yield f
     except:
         log.error('Failed to load file {}'.format(path, exc_info=True))
@@ -1051,7 +1051,7 @@ class MHApplication(gui3d.Application, mh.Application):
         log.debug("Loaded theme {}".format(mh.getSysDataPath('themes/'+theme+'.mht')))
 
         try:
-            f = open(mh.getSysDataPath('themes/%s.qss' % theme), 'r')
+            f = open(mh.getSysDataPath('themes/%s.qss' % theme), 'rU')
             qStyle = "\n".join(f.readlines())
             self.setStyleSheet(qStyle)
             # Also set stylesheet on custom slider style

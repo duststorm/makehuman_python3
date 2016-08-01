@@ -319,7 +319,7 @@ class ZippedTargetsCrawler(TargetsCrawler):
                 add_file(dir[head], tail)
 
         # Add targets in npz archive to file list
-        with zipfile.ZipFile(self.npzPath, 'r') as npzfile:
+        with zipfile.ZipFile(self.npzPath, 'rU') as npzfile:
             for file_ in npzfile.infolist():
                 name = file_.filename
                 if not name.endswith('.index.npy'):
