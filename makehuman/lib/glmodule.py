@@ -44,8 +44,8 @@ OpenGL.ERROR_CHECKING = G.args.get('debugopengl', False)
 OpenGL.ERROR_LOGGING = G.args.get('debugopengl', False)
 OpenGL.FULL_LOGGING = G.args.get('fullloggingopengl', False)
 OpenGL.ERROR_ON_COPY = True
-from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GL import *
 from OpenGL.GL.framebufferobjects import *
 from OpenGL.GL.ARB.transpose_matrix import *
 from OpenGL.GL.ARB.multisample import *
