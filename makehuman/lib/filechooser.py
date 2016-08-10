@@ -278,6 +278,8 @@ class TagFilter(gui.GroupBox):
             self.addTag(tag)
 
     def addTag(self, tag):
+        if type(tag) is bytes:
+            tag = tag.decode('utf-8')
         tag = tag.lower()
         if tag in self.tags:
             return

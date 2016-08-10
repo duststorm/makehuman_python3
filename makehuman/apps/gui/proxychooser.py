@@ -107,6 +107,8 @@ class ProxyChooserTaskView(gui3d.TaskView, filecache.MetadataCacher):
 
         self.homeProxyDir = getpath.getPath(os.path.join('data', proxyName))
         self.sysProxyDir = mh.getSysDataPath(proxyName)
+        log.debug("ProxyChooserTaskView homeProxyDir: %s", self.homeProxyDir)
+        log.debug("ProxyChooserTaskView sysProxyDir: %s", self.sysProxyDir)
 
         if not os.path.exists(self.homeProxyDir):
             os.makedirs(self.homeProxyDir)
