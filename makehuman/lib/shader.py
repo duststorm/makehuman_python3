@@ -430,7 +430,7 @@ class Shader(object):
             self.delete()
             return
 
-        self.vertexTangentAttrId = glGetAttribLocation(self.shaderId, 'tangent')
+        self.vertexTangentAttrId = glGetAttribLocation(self.shaderId, b'tangent')
 
         self.uniforms = None
         self.glUniforms = []
