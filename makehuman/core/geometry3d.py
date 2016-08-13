@@ -394,7 +394,7 @@ class GridMesh(module3d.Object3D):
             spacing = float(spacing) / self.subgrids
 
             # Horizontal lines
-            sub = self.mainGridEnd/2
+            sub = self.mainGridEnd//2
             for i in range(hBoxes*(subgrids-1)):
                 boxOffset = (spacing * (i // (subgrids-1)))
                 pos = spacing + hBegin + (i * spacing) + boxOffset
