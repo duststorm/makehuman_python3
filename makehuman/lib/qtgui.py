@@ -197,6 +197,8 @@ class TabBar(QtGui.QTabBar, TabsBase):
 class GroupBox(QtGui.QGroupBox, Widget):
     def __init__(self, label = ''):
         label = getLanguageString(label) if label else ''
+        if type(label) is bytes:
+            label = label.decode("utf-8")
         QtGui.QGroupBox.__init__(self, label)
         Widget.__init__(self)
         self.layout = QtGui.QGridLayout(self)
