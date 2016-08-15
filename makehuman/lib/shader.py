@@ -46,6 +46,8 @@ from core import G
 
 class Uniform(object):
     def __init__(self, index, name, pytype, dims):
+        if type(name) is bytes:
+            name = name.decode('utf-8')
         self.index = index
         self.name = name
         self.pytype = pytype
