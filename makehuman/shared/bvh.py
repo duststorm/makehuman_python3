@@ -251,7 +251,7 @@ class BVH():
         return name in self.joints
 
     def __cacheGetJoints(self):
-        from Queue import deque
+        from queue import deque
 
         result = []
         queue = deque([self.rootJoint])
