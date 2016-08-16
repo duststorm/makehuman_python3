@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3.5
 
 ##
 # Calculate the size in bytes of a hg changeset diff

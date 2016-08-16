@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.5
 # -*- coding: utf-8 -*-
 
 """
@@ -62,6 +62,8 @@ def getFiles(root, filenames, filterStr):
 
 
 def compileMesh(path):
+    if type(path) is bytes:
+        path = path.decode('utf-8')
     name = os.path.basename(path)
     obj = module3d.Object3D(name)
 
