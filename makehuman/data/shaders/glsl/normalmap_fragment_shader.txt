@@ -1,4 +1,4 @@
-version 120
+#version 120
 
 /**
  * Simple normal mapping shader used for testing.
