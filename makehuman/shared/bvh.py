@@ -251,7 +251,8 @@ class BVH():
         return name in self.joints
 
     def __cacheGetJoints(self):
-        from queue import deque
+        # it seems deqie moves from Queue to collections in python 3
+        from collections import deque
 
         result = []
         queue = deque([self.rootJoint])
