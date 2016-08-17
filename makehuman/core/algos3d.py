@@ -186,15 +186,15 @@ class Target(object):
         if os.path.getmtime(vname) < os.path.getmtime(name):
             log.message('compiled file out of date: %s', vname)
             raise RuntimeError()
-        self.verts = np.load(iname)
-        self.data = np.load(vname) * 1e-3
+        self.verts = np.load(iname, encoding = 'ascii')
+        self.data = np.load(vname, encoding = 'ascii') * 1e-3
 
     def _load_binary(self, name):
         if Target.npzfile is None:
             try:
                 npzname = getSysDataPath('targets.npz')     # TODO duplicate path literal
                 Target.npzdir = os.path.dirname(npzname)
-                Target.npzfile = np.load(npzname)
+                Target.npzfile = np.load(npzname, encoding = 'ascii')
                 Target.npztime = os.path.getmtime(npzname)
             except:
                 log.message('no compressed targets found')

@@ -659,7 +659,7 @@ def saveBinaryProxy(proxy, path):
 def loadBinaryProxy(path, human, type):
     log.debug("Loading binary proxy %s.", path)
 
-    npzfile = np.load(path)
+    npzfile = np.load(path, encoding = 'ascii')
     #if type is None:
     #    proxyType = npzfile['proxyType'].tostring()
     #else:
@@ -1083,7 +1083,7 @@ def peekMetadata(proxyFilePath, proxyType=None):
                     raise RuntimeError('compiled file out of date: %s', _npzpath)
 
             # Binary proxy file
-            npzfile = np.load(proxyFilePath)
+            npzfile = np.load(proxyFilePath, encoding = 'ascii')
 
             uuid = npzfile['uuid'].tostring()
             tags = set(_unpackStringList(npzfile['tags_str'], npzfile['tags_idx']))

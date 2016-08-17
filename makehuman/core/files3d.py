@@ -117,9 +117,8 @@ def saveBinaryMesh(obj, path):
 
 def loadBinaryMesh(obj, path):
     log.debug("Loading binary mesh %s.", path)
-    #log.debug('loadBinaryMesh: np.load()')
-
-    npzfile = np.load(path)
+   
+    npzfile = np.load(path, encoding = 'ascii')
 
     if 'MAX_FACES' in npzfile:
         # Set pole count if stored
