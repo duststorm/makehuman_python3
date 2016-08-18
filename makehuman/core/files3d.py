@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python2.7
 # -*- coding: utf-8 -*-
 
 """ 
@@ -117,8 +117,9 @@ def saveBinaryMesh(obj, path):
 
 def loadBinaryMesh(obj, path):
     log.debug("Loading binary mesh %s.", path)
-   
-    npzfile = np.load(path, encoding = 'ASCII')
+    #log.debug('loadBinaryMesh: np.load()')
+
+    npzfile = np.load(path)
 
     if 'MAX_FACES' in npzfile:
         # Set pole count if stored
@@ -181,21 +182,22 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     maxFaces:
       *uint* Number of faces per vertex (pole), None for default (min 4)
     """
-    name = str(os.path.basename(path))
+    if type(path) is bytes:
+        path = path.decode('utf-8')
+    log.debug("loadMesh in files3d received a raw path of %s", path)
+    name = os.path.basename(path)
+    log.debug("files3d loadMesh basename is %s", name)
     if obj is None:
         obj = module3d.Object3D(name)
+        log.warning("obj name changed from None to %s", module3d.Object3D(name))
     if maxFaces:
         obj.MAX_FACES = maxFaces
 
-    obj.path = str(path)
+    obj.path = path
 
     try:
-        npzpath = os.path.splitext(path)[0]
-        if type(npzpath) is bytes:
-            npzpath = npzpath.decode('utf-8') + '.npz'
-        else:
-            npzpath = npzpath + '.npz'
-
+        npzpath = os.path.splitext(path)[0] + '.npz'
+        log.debug("files3d loadMesh will attempt to load %s", npzpath)
         try:
             if not os.path.isfile(npzpath):
                 log.message('compiled file missing: %s', npzpath)
@@ -206,13 +208,14 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
             loadBinaryMesh(obj, npzpath)
         except Exception as e:
             showTrace = not isinstance(e, RuntimeError)
+            log.warning("files3d loadMesh was attempting to load %s", npzpath)
             log.warning("Problem loading binary mesh: %s", e, exc_info=showTrace)
             loadTextMesh(obj, path)
             if isSubPath(npzpath, getPath('')):
                 # Only write compiled binary meshes to user data path
                 try:
                     saveBinaryMesh(obj, npzpath)
-                except Exception:
+                except StandardError:
                     log.notice('unable to save compiled mesh: %s', npzpath)
             else:
                 log.debug('Not writing compiled meshes to system paths (%s).', npzpath)

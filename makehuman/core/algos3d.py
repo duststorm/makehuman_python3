@@ -153,12 +153,12 @@ class Target(object):
         lname = '%s.license' % bname
         if os.path.isfile(name) and Target.npztime < os.path.getmtime(name):
             log.message('compiled file newer than archive: %s', name)
-            raise RuntimeError('compiled file newer than archive: %s' % name)
+            raise RuntimeError('in _load_binary_archive compiled file newer than archive: %s' % name)
         if iname not in Target.npzfile:
-            log.message('compiled file missing: %s', iname)
+            log.message('in _load_binary_archive compiled iname file missing: %s', iname)
             raise RuntimeError('compiled file missing: %s' % iname)
         if vname not in Target.npzfile:
-            log.message('compiled file missing: %s', vname)
+            log.message('in _load_binary_archive compiled vname file missing: %s', vname)
             raise RuntimeError('compiled file missing: %s' % vname)
         self.verts = Target.npzfile[iname]
         self.data = Target.npzfile[vname] * 1e-3
