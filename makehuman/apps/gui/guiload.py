@@ -55,7 +55,7 @@ class HumanFileSort(fc.FileSort):
     def getMeta(self, filename):
         meta = {}
 
-        from codecs import open
+        from io import open
         f = open(filename, 'rU', encoding="utf-8")
         for line in f:
             lineData = line.split()

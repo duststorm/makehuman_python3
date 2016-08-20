@@ -1249,7 +1249,7 @@ def loadPoseFromMhpFile(filepath, skel):
     """
     import log
     import os
-    from codecs import open
+    from io import open
 
     log.message("Loading MHP file %s", filepath)
     fp = open(filepath, "rU", encoding="utf-8")

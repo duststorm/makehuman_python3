@@ -61,7 +61,7 @@ import contextlib
 
 @contextlib.contextmanager
 def outFile(path):
-    from codecs import open
+    from io import open
     path = mh.getPath(path)
     tmppath = path + '.tmp'
     try:
@@ -77,7 +77,7 @@ def outFile(path):
 
 @contextlib.contextmanager
 def inFile(path):
-    from codecs import open
+    from io import open
     try:
         path = mh.getPath(path)
         if not os.path.isfile(path):

@@ -329,7 +329,7 @@ class Material(object):
         """
         if type(filename) is bytes:
             filename = filename.decode('utf-8')
-        from codecs import open
+        from io import open
         log.debug("Loading material from file %s", filename)
         try:
             f = open(filename, "rU", encoding="utf-8")
@@ -500,7 +500,7 @@ class Material(object):
             return formatPath(filename)
 
     def toFile(self, filename, comments = []):
-        from codecs import open
+        from io import open
 
         try:
             f = open(filename, 'w', encoding='utf-8')
@@ -1446,7 +1446,7 @@ class UVMap:
 
 
 def loadUvObjFile(filepath):
-    from codecs import open
+    from io import open
     fp = open(filepath, "rU", encoding="utf-8")
     uvs = []
     fuvs = []
@@ -1462,7 +1462,7 @@ def loadUvObjFile(filepath):
     return uvs,fuvs
 
 def peekMetadata(filename):
-    from codecs import open
+    from io import open
     try:
         f = open(filename, "rU", encoding="utf-8")
     except:

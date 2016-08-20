@@ -101,7 +101,7 @@ def downloadFile(ftp, filePath, destination, fileProgress):
     downloadFromFTP(ftp, filePath, destination)
 
 def parseContentsFile(filename):
-    from codecs import open
+    from io import open
     f = open(filename, 'rU', encoding="utf-8")
     fileData = f.read()
     contents = {}
@@ -119,7 +119,7 @@ def parseContentsFile(filename):
     return contents
 
 def writeContentsFile(filename, contents):
-    from codecs import open
+    from io import open
     f = open(filename, 'w', encoding="utf-8")
     for fPath, mtime in list(contents.items()):
         f.write("{} {}\n".format(fPath, mtime))

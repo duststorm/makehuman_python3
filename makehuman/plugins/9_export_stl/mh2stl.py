@@ -79,7 +79,7 @@ def exportStlAscii(filepath, config, exportJoints = False):
     objects = human.getObjects(True)
     meshes = [o.mesh.clone(1,True) for o in objects]
 
-    from codecs import open
+    from io import open
     fp = open(filepath, 'w', encoding="utf-8")
     solid = name.replace(' ','_')
     fp.write('solid %s\n' % solid)

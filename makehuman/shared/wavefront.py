@@ -42,7 +42,7 @@ import module3d
 import codecs
 import math
 import numpy as np
-from codecs import open  # TODO should Wavefront OBJ files contain unicode characters, or would it be better to strip them?
+from io import open  # TODO should Wavefront OBJ files contain unicode characters, or would it be better to strip them?
 
 def loadObjFile(path, obj = None):
     """

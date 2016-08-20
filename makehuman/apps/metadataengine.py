@@ -131,7 +131,7 @@ def loadRecord(archivePath, recordID):
       *string*.  The ID of the record to load.
     """
 
-    from codecs import open
+    from io import open
     time1 = time.time()
     f = open(archivePath, 'rU', encoding="utf-8")
     record = None
@@ -159,7 +159,7 @@ def searchRecord(archivePath, field):
     field:     
       *string*.  The field to search for.
     """
-    from codecs import open
+    from io import open
     time1 = time.time()
     f = open(archivePath, 'rU', encoding="utf-8")
     recordIDs = []
@@ -187,7 +187,7 @@ def saveRecord(archivePath, recordToSave):
       *string*.  The record to save.
     """
 
-    from codecs import open
+    from io import open
     time1 = time.time()
     recordID = recordToSave.split()[0]
     records = []

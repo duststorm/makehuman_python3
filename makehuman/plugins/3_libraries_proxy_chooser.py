@@ -56,7 +56,7 @@ class ProxyFileSort(fc.FileSort):
 
         faces = 0
         try:
-            from codecs import open
+            from io import open
             f = open(filename.replace('.proxy', '.obj'), 'rU', encoding="utf-8")
             for line in f:
                 lineData = line.split()

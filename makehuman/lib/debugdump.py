@@ -62,7 +62,7 @@ class DebugDump(object):
         self.debugpath = None
 
     def open(self):
-        from codecs import open
+        from io import open
         if self.debugpath is None:
             self.debugpath = getpath.getPath()
 
@@ -144,7 +144,7 @@ class DebugDump(object):
         self.write("QT.PLUGIN_PATH_ENV: %s" % qt_plugin_path_env)
         qt_conf_present = os.path.isfile(getpath.getSysPath('qt.conf'))
         if qt_conf_present:
-            from codecs import open
+            from io import open
             f = open(getpath.getSysPath('qt.conf'), "r", encoding="utf-8", errors="replace")
             qt_conf_content = f.read()
             qt_conf_content = qt_conf_content.replace('\n', '\n'+(' '*len('QT.CONF: '))).strip()

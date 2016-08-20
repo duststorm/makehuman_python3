@@ -44,7 +44,7 @@ import numpy as np
 import os
 import zipfile
 import fnmatch
-from codecs import open
+from io import open
 
 def getAllFiles(rootPath, filterStrArr):
     result = [ None ]*len(filterStrArr)

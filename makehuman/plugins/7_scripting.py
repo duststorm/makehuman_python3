@@ -46,7 +46,7 @@ import log
 import os
 from io import StringIO
 from core import G
-from codecs import open
+from io import open
 
 class ScriptingView(gui3d.TaskView):
 

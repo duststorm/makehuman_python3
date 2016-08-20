@@ -380,7 +380,7 @@ def get_platform_paths():
         stderr_filename = os.path.join(home, "makehuman-error.txt")
 
 def redirect_standard_streams():
-    from codecs import open
+    from io import open
     import locale
     encoding = locale.getpreferredencoding()
     if stdout_filename:
@@ -701,7 +701,7 @@ http://www.makehuman.org/halloffame'''
 
 def getSoftwareLicense(richtext=False):
     import getpath
-    from codecs import open
+    from io import open
     lfile = getpath.getSysPath('license.txt')
     if not os.path.isfile(lfile):
         if richtext:
@@ -719,7 +719,7 @@ def getSoftwareLicense(richtext=False):
 
 def getThirdPartyLicenses(richtext=False):
     import getpath
-    from codecs import open
+    from io import open
     from collections import OrderedDict
     def _title(name, url, license):
         if richtext:

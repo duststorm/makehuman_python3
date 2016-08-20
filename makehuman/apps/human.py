@@ -1426,7 +1426,7 @@ class Human(guicommon.Object, animation.AnimatedMesh):
         self.callEvent('onChanged', event)
 
     def load(self, filename, update=True, strict=False):
-        from codecs import open
+        from io import open
 
         def _get_version(lineData):
             try:
@@ -1547,7 +1547,7 @@ class Human(guicommon.Object, animation.AnimatedMesh):
         log.message("Done loading MHM file.")
 
     def save(self, filename, tags):
-        from codecs import open
+        from io import open
         from progress import Progress
         progress = Progress(len(G.app.saveHandlers))
         event = events3d.HumanEvent(self, 'save')
