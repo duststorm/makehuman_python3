@@ -1003,7 +1003,7 @@ class MHApplication(gui3d.Application, mh.Application):
         self.bgTopLeftColor = [0.312, 0.312, 0.312]
         self.bgTopRightColor = [0.312, 0.312, 0.312]
 
-        f = open(os.path.join(mh.getSysDataPath("themes/"), theme + ".mht"), 'rU')
+        f = open(os.path.join(mh.getSysDataPath("themes/"), theme + ".mht"), 'rU', encoding = 'utf-8')
 
         update_log = False
         for data in f.readlines():
@@ -1051,7 +1051,7 @@ class MHApplication(gui3d.Application, mh.Application):
         log.debug("Loaded theme {}".format(mh.getSysDataPath('themes/'+theme+'.mht')))
 
         try:
-            f = open(mh.getSysDataPath('themes/%s.qss' % theme), 'rU')
+            f = open(mh.getSysDataPath('themes/%s.qss' % theme), 'rU', encoding = 'utf-8')
             qStyle = "\n".join(f.readlines())
             self.setStyleSheet(qStyle)
             # Also set stylesheet on custom slider style

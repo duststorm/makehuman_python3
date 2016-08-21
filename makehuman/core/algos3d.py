@@ -123,7 +123,7 @@ class Target(object):
         import makehuman
         data = []
         license = defaultTargetLicense()
-        with open(name, 'rU') as fd:
+        with open(name, 'rU', encoding = 'utf-8') as fd:
             for line in fd:
                 line = line.strip()
                 if line.startswith('#'):
@@ -452,7 +452,7 @@ def saveTranslationTarget(obj, targetPath, groupToSave=None, epsilon=0.001):
     nVertsExported = len(vertsToSave)
 
     try:
-        with open(targetPath, 'w') as fileDescriptor:
+        with open(targetPath, 'w', encoding = 'utf-8') as fileDescriptor:
             for i in range(nVertsExported):
                 fileDescriptor.write('%d %f %f %f\n' % (vertsToSave[i], delta[i,0], delta[i,1], delta[i,2]))
 
