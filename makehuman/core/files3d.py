@@ -202,14 +202,13 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
         npzpath = os.path.splitext(path)[0] + '.npz'
         log.debug("files3d loadMesh will attempt to load %s", npzpath)
                
-        if os.path.isfile(path) and os.path.getmtime(path) > os.path.getmtime(npzpath):
-            log.message('compiled file out of date: %s', npzpath)
-            raise RuntimeError('compiled file out of date: %s', npzpath)
-     
         if os.path.isfile(npzpath):
             try: 
                 loadBinaryMesh(obj, npzpath)
-            except:
+                if os.path.getmtime(path) > os.path.getmtime(npzpath):
+                    log.message('compiled file out of date: %s', npzpath)
+                    raise RuntimeError('compiled file out of date: %s', npzpath)
+            except:             
                 log.warning("files3d loadMesh failed to load binary %s", npzpath)             
         else:
             try:
@@ -225,5 +224,4 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     except:          
         log.error('Unable to load obj file: %s', path, exc_info=True)
         return False
-
     return obj
