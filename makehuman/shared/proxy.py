@@ -168,14 +168,15 @@ class Proxy:
         
         name = self.obj_file
         if isinstance(name, bytes):
-            name = name.decode('utf-8')                      
-        name = getpath.findFile(name)
+            name = name.decode('utf-8')
+                                  
+        name = getpath.getSysPath(name)
         mesh = files3d.loadMesh(name, maxFaces = self.max_pole)
         if not mesh:
             log.error("loadMeshAndObject failed to load %s", name)
             log.error("The meshname is %s", name)
 
-        log.debug("Now the path has been extended %s", name)
+        log.debug("Now the path has been extended to %s", name)
         mesh.priority = self.z_depth           # Set render order
         mesh.setCameraProjection(0)             # Set to model camera
 
@@ -1150,6 +1151,8 @@ def _unpackStringList(text, index):
 
 def _getFilePath(filename, folder = None, altExtensions=None):
     import getpath
+    if isinstance(filename, bytes):
+        filename = filename.decode('utf=-8')
     if altExtensions is not None:
         # Search for existing path with alternative file extension
         for aExt in altExtensions:

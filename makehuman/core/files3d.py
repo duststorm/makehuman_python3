@@ -69,7 +69,7 @@ import module3d
 import numpy as np
 import log
 import wavefront
-from getpath import isSubPath, getPath
+from getpath import isSubPath, getPath, getSysDataPath
 
 def packStringList(strings):
     text = ''
@@ -203,6 +203,7 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
         path = getpath.getSysPath(path)
         log.message("Expanded path is found to be %s", path)
         npzpath = os.path.splitext(path)[0] + '.npz'
+       
         log.debug("files3d loadMesh will attempt to load %s", npzpath)
         
         if not os.path.isfile(npzpath):
