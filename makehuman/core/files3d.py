@@ -184,44 +184,45 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     """
     if type(path) is bytes:
         path = path.decode('utf-8')
-    log.message("loadMesh in files3d received a raw path of %s", path)
+    log.debug("loadMesh in files3d received a raw path of %s", path)
     name = os.path.basename(path)
+    if isinstance(name, bytes):
+        name.decode('utf-8')
+    log.debug("os.path.basename produce a name of: %s", type(name))
     log.debug("files3d loadMesh basename is %s", name)
     if obj is None:
-        obj = module3d.Object3D(name)
-        log.message("obj name changed from None to %s", module3d.Object3D(name))
+        obj = module3d.Object3D(os.path.splitext(path)[0])
+        log.warning("obj name changed from None to %s", module3d.Object3D(name))
     if maxFaces:
         obj.MAX_FACES = maxFaces
 
     obj.path = path
+
     try:
         import getpath
         path = getpath.getSysPath(path)
         log.message("Expanded path is found to be %s", path)
-    
         npzpath = os.path.splitext(path)[0] + '.npz'
         log.debug("files3d loadMesh will attempt to load %s", npzpath)
-               
-        if os.path.isfile(npzpath):
-            try: 
-                loadBinaryMesh(obj, npzpath)
-                if os.path.getmtime(path) > os.path.getmtime(npzpath):
-                    log.message('compiled file out of date: %s', npzpath)
-                    raise RuntimeError('compiled file out of date: %s', npzpath)
-            except:             
-                log.warning("files3d loadMesh failed to load binary %s", npzpath)             
+        
+        if not os.path.isfile(npzpath):
+            log.message('compiled file missing: %s', npzpath)
+            raise RuntimeError('compiled file missing: %s', npzpath)
+        if os.path.isfile(path) and os.path.getmtime(path) > os.path.getmtime(npzpath):
+            log.message('compiled file out of date: %s', npzpath)
+            raise RuntimeError('compiled file out of date: %s', npzpath)
+        loadBinaryMesh(obj, npzpath)
+
+        log.warning("files3d loadMesh was attempting to load %s", npzpath)
+        loadTextMesh(obj, path)
+        if isSubPath(npzpath, getPath('')):
+            # Only write compiled binary meshes to user data path
+            saveBinaryMesh(obj, npzpath)
+            log.notice('unable to save compiled mesh: %s', npzpath)
         else:
-            try:
-                loadTextMesh(obj, path)
-                if isSubPath(npzpath, getPath('')):
-                    # Only write compiled binary meshes to user data path
-                    saveBinaryMesh(obj, npzpath)
-                    log.notice('Successfully saved binary mesh to: %s', npzpath)
-                else:
-                    log.debug('Not writing compiled meshes to system paths (%s).', npzpath)
-            except:
-                log.warning("files3d loadTextMesh failed to load %s", path)
-    except:          
+            log.debug('Not writing compiled meshes to system paths (%s).', npzpath)
+    except:
         log.error('Unable to load obj file: %s', path, exc_info=True)
         return False
+
     return obj

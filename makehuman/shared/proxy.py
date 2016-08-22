@@ -67,10 +67,13 @@ Unit3 = np.identity(3,float)
 
 class Proxy:
     def __init__(self, file, type, human):
-        log.debug("Loading proxy file: %s.", file)
+        if isinstance(file, bytes):
+            file = file.decode('utf-8')
+        log.debug("Initialize proxy file: %s.", file)
         import makehuman
-
         name = os.path.splitext(os.path.basename(file))[0]
+        if isinstance(name, bytes):
+            name = name.decode('utf-8')
         self.name = name.capitalize().replace(" ","_")
         self.license = makehuman.getAssetLicense()
         self.description = ""
@@ -158,11 +161,21 @@ class Proxy:
     def loadMeshAndObject(self, human):
         import files3d
         import guicommon
-
-        mesh = files3d.loadMesh(self.obj_file, maxFaces = self.max_pole)
+        import getpath
+        
+        import inspect  # temp code to log calling routines
+        log.debug("loadMeshAndObject called by: %s", inspect.stack()[1][3])
+        
+        name = self.obj_file
+        if isinstance(name, bytes):
+            name = name.decode('utf-8')                      
+        name = getpath.findFile(name)
+        mesh = files3d.loadMesh(name, maxFaces = self.max_pole)
         if not mesh:
-            log.error("Failed to load %s", self.obj_file)
+            log.error("loadMeshAndObject failed to load %s", name)
+            log.error("The meshname is %s", name)
 
+        log.debug("Now the path has been extended %s", name)
         mesh.priority = self.z_depth           # Set render order
         mesh.setCameraProjection(0)             # Set to model camera
 
