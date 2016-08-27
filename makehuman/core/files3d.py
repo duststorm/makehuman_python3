@@ -192,7 +192,7 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     log.debug("files3d loadMesh basename is %s", name)
     if obj is None:
         obj = module3d.Object3D(os.path.splitext(path)[0])
-        log.warning("obj name changed from None to %s", module3d.Object3D(name))
+        log.message("obj name changed from None to %s", module3d.Object3D(name))
     if maxFaces:
         obj.MAX_FACES = maxFaces
 
