@@ -55,10 +55,10 @@ MESSAGE = logging.INFO
 
 LEVEL_TO_STR = { DEBUG: "debug",
                  INFO: "info",
+                 NOTICE: "notice",
                  WARNING: "warning",
                  ERROR: "error",
-                 CRITICAL: "critical",
-                 NOTICE: "notice"
+                 CRITICAL: "critical"
                }
 
 def logLevelToStr(levelCode):
@@ -187,10 +187,10 @@ class DowngradeFilter(logging.Filter):
         return True
 
 _logLevelColors = {
-    DEBUG: 'grey',
-    NOTICE: 'blue',
-    INFO: 'blue',
-    WARNING: 'darkorange',
+    DEBUG: 'lightgrey',
+    INFO: 'lightblue',
+    NOTICE: 'yellow',
+    WARNING: 'orange',
     ERROR: 'red',
     CRITICAL: 'red'
 }

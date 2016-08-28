@@ -993,9 +993,10 @@ class MHApplication(gui3d.Application, mh.Application):
         self.clearColor = [0.5, 0.5, 0.5]
         self.gridColor = [1.0, 1.0, 1.0]
         self.gridSubColor = [0.7, 0.7, 0.7]
-        log._logLevelColors[log.DEBUG] = 'grey'
-        log._logLevelColors[log.NOTICE] = 'blue'
-        log._logLevelColors[log.WARNING] = 'darkorange'
+        log._logLevelColors[log.DEBUG] = 'lightgrey'
+        log._logLevelColors[log.INFO] = 'lightblue'
+        log._logLevelColors[log.NOTICE] = 'yellow'
+        log._logLevelColors[log.WARNING] = 'orange'
         log._logLevelColors[log.ERROR] = 'red'
         log._logLevelColors[log.CRITICAL] = 'red'
         self.bgBottomLeftColor = [0.101, 0.101, 0.101]
