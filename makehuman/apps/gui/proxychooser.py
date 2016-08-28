@@ -225,6 +225,8 @@ class ProxyChooserTaskView(gui3d.TaskView, filecache.MetadataCacher):
         Called when user selects a file from the filechooser widget.
         Creates an action that invokes selectProxy().
         """
+        if isinstance(filename, bytes):
+            filename.decode('utf-8')
         if self.multiProxy:
             action = MultiProxyAction("Change %s" % self.proxyName,
                                       self,
@@ -248,6 +250,8 @@ class ProxyChooserTaskView(gui3d.TaskView, filecache.MetadataCacher):
         This method only has effect when this library allows multiple proxy
         selection.
         """
+        if isinstance(filename, bytes):
+            filename.decode('utf-8')        
         if not self.multiProxy:
             return
 
