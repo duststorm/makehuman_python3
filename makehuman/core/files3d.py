@@ -76,8 +76,9 @@ def packStringList(strings):
     index = []
     for string in strings:
         index.append(len(text))
-        text += string
+        text += str(string)
     text = np.fromstring(text, dtype='S1')
+    #text = np.fromstring(text, dtype='<U')
     index = np.array(index, dtype=np.uint32)
     return text, index
 
