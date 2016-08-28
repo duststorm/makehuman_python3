@@ -61,6 +61,8 @@ import contextlib
 
 @contextlib.contextmanager
 def outFile(path):
+    if isinstance(path, bytes):
+        path.decode('utf-8')
     from io import open
     path = mh.getPath(path)
     tmppath = path + '.tmp'

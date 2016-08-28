@@ -92,7 +92,6 @@ def unpackStringList(text, index):
     if last is not None:
         name = text[last:].tostring()
         strings.append(name)
-
     return strings
 
 def saveBinaryMesh(obj, path):

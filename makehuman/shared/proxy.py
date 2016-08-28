@@ -42,6 +42,7 @@ import numpy as np
 from core import G
 import getpath
 import log
+import files3d
 from collections import OrderedDict
 import makehuman
 
@@ -1126,27 +1127,30 @@ def peekMetadata(proxyFilePath, proxyType=None):
 
 
 def _packStringList(strings):
-    text = ''
-    index = []
-    for string in strings:
-        index.append(len(text))
-        text += string
-    text = np.fromstring(text, dtype='S1')
-    index = np.array(index, dtype=np.uint32)
+#     text = ''
+#     index = []
+#     for string in strings:
+#         index.append(len(text))
+#         text += string
+#     text = np.fromstring(text, dtype='S1')
+#     index = np.array(index, dtype=np.uint32)
+# TODO remove above which unnecessarily duplicates files3d
+    text, index = files3d.packStringList(strings)
     return text, index
 
 def _unpackStringList(text, index):
-    strings = []
-    last = None
-    for i in index:
-        if last is not None:
-            name = text[last:i].tostring()
-            strings.append(name)
-        last = i
-    if last is not None:
-        name = text[last:].tostring()
-        strings.append(name)
-
+#     strings = []
+#     last = None
+#     for i in index:
+#         if last is not None:
+#             name = text[last:i].tostring()
+#             strings.append(name)
+#         last = i
+#     if last is not None:
+#         name = text[last:].tostring()
+#         strings.append(name)
+# TODO remove above which unnecessarily duplicates files3d
+    strings = files3d.unpackStringList(text, index)
     return strings
 
 def _getFilePath(filename, folder = None, altExtensions=None):
