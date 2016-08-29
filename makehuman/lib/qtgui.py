@@ -573,6 +573,8 @@ class RadioButton(QtGui.QRadioButton, ButtonBase):
 
     def __init__(self, group, label=None, selected=False):
         label = getLanguageString(label)
+        if isinstance(label, bytes):
+            label = label.decode('utf-8')
         super(RadioButton, self).__init__(label)
         ButtonBase.__init__(self)
         self.group = group
@@ -816,6 +818,8 @@ class ListView(QtGui.QListWidget, Widget):
 class TextView(QtGui.QLabel, Widget):
     def __init__(self, label = ''):
         label = getLanguageString(label)
+        if isinstance(label, bytes):
+            label = label.decode('utf-8')
         super(TextView, self).__init__(label)
         Widget.__init__(self)
 

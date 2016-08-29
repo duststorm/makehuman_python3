@@ -211,14 +211,14 @@ class EventHandler(object):
         topLevel = EventHandler._depth == 0
         EventHandler._depth += 1
         try:
-            self._logger.debug('callEvent[%d]: %s.%s(%s)', self._depth, self, eventType, event)
+            self._logger.debug('event3d.callEvent[%d]: %s.%s(%s)', self._depth, self, eventType, event)
             method = getattr(self, eventType)
             if topLevel and profiler.active():
                 profiler.accum('method(event)', globals(), locals())
             else:
                 method(event)
         except Exception as _:
-            log.warning('Exception during event %s', eventType, exc_info=True)
+            log.warning('event3d.callEvent exception during event %s', eventType, exc_info=True)
             self.eventFailed(EventHandler._depth)
         EventHandler._depth -= 1
         if topLevel:

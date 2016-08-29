@@ -126,6 +126,8 @@ class ClothesTaskView(proxychooser.ProxyChooserTaskView):
 
         for pxy in stackedProxies:
             obj = pxy.object
+            if isinstance(obj.name, bytes):
+                obj.name = obj.name.decode('utf-8')
 
             # Remap vertices from basemesh to proxy verts
             proxyVertMask = proxy.transferVertexMaskToProxy(vertsMask, pxy)

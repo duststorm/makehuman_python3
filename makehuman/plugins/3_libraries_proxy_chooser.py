@@ -43,7 +43,7 @@ import gui3d
 import proxychooser
 import filechooser as fc
 import proxy
-
+import log
 
 class ProxyFileSort(fc.FileSort):
 
@@ -117,6 +117,7 @@ class ProxyTaskView(proxychooser.ProxyChooserTaskView):
         self.human.setProxy(pxy)
 
         if self.descriptionWidget:
+            log.debug("selectProxy description is: %s", pxy.description)
             self.descrLbl.setText(pxy.description)
 
         # Add to selection

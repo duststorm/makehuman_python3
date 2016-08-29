@@ -188,7 +188,7 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
     name = os.path.basename(path)
     if isinstance(name, bytes):
         name.decode('utf-8')
-    log.debug("os.path.basename produce a name of: %s", type(name))
+    log.debug("os.path.basename produce a name of: %s", name)
     log.debug("files3d loadMesh basename is %s", name)
     if obj is None:
         obj = module3d.Object3D(os.path.splitext(path)[0])
@@ -214,14 +214,14 @@ def loadMesh(path, loadColors=1, maxFaces=None, obj=None):
             raise RuntimeError('compiled file out of date: %s', npzpath)
         loadBinaryMesh(obj, npzpath)
 
-        log.warning("files3d loadMesh was attempting to load %s", npzpath)
+        log.message("files3d loadMesh attempting to load %s", npzpath)
         loadTextMesh(obj, path)
         if isSubPath(npzpath, getPath('')):
             # Only write compiled binary meshes to user data path
             saveBinaryMesh(obj, npzpath)
-            log.notice('unable to save compiled mesh: %s', npzpath)
+            log.debug('files3d just saved compiled mesh: %s', npzpath)
         else:
-            log.debug('Not writing compiled meshes to system paths (%s).', npzpath)
+            log.debug("files3d using getpath('') could not find (%s).", npzpath)
     except:
         log.error('Unable to load obj file: %s', path, exc_info=True)
         return False

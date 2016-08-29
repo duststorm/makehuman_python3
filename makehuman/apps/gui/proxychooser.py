@@ -95,6 +95,10 @@ class ProxyChooserTaskView(gui3d.TaskView, filecache.MetadataCacher):
     def __init__(self, category, proxyName, tabLabel = None, multiProxy = False, tagFilter = False, descriptionWidget = False):
         if not tabLabel:
             tabLabel = proxyName.capitalize()
+        if isinstance(tabLabel, bytes):
+            tabLabel = tabLabel.decode('utf-8')            
+        if isinstance(proxyName, bytes):
+            proxyName = proxyName.decode('utf-8')
         proxyName = proxyName.lower().replace(" ", "_")
         self.proxyName = proxyName
         gui3d.TaskView.__init__(self, category, tabLabel)
@@ -162,6 +166,7 @@ class ProxyChooserTaskView(gui3d.TaskView, filecache.MetadataCacher):
 
         @self.filechooser.mhEvent
         def onFileSelected(filename):
+            log.debug("proxyChooser.filechoose.mhevent selected: %s", filename)
             self.proxyFileSelected(filename)
 
         if self.multiProxy:

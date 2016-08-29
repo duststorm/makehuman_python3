@@ -81,7 +81,7 @@ def compileMesh(path):
             return False
         files3d.saveBinaryMesh(obj, npzpath)
     except:
-        print('Unable to save compiled mesh for file {}'.format(path))
+        print('compile_models was unable to save compiled mesh for file {}'.format(path))
         #import traceback
         #traceback.print_exc(file=sys.stdout)
         return False
