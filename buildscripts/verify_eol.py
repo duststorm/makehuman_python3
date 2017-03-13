@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -38,6 +38,8 @@ Abstract
 Validate the MH source code and detect and report any files containing windows
 line endings.
 """
+
+from __future__ import print_function
 
 import sys
 import os
@@ -126,13 +128,13 @@ if __name__ == '__main__':
     fix = args.get('fix', False)
     detected = check_dos_eol(path)
     if len(detected) > 0:
-        print "Files containing DOS line endings:"
-        print "\n".join( detected )
+        print ("Files containing DOS line endings:")
+        print ("\n".join( detected ))
 
     if fix:
-        print "\nFixing files..."
+        print ("\nFixing files...")
         fix_dos_eol(detected)
-        print "All done"
+        print ("All done")
     else:
         if len(detected) > 0:
             sys.exit(1)
