@@ -57,11 +57,17 @@ mimetypes.add_type('text/mhfile', '.bvh')
 mimetypes.add_type('text/mhfile', '.rig')
 mimetypes.add_type('text/mhfile', '.target')
 
+try:
+    unicode
+except NameError:
+    # py3
+    unicode = str
+
 def check_dos_eol(path):
     global _recurse_files
     result = []
     for f in _recurse_get_ascii_files(path):
-        if "\r\n" in open(f, 'rb').read():
+        if "\r\n" in unicode(open(f, 'rb').read(), 'utf-8'):
             result.append( f )
     return result
 
